@@ -39,14 +39,5 @@ A few things worth knowing:
 The site is on Vercel and redeploys itself whenever anything is pushed to
 `main`. Nothing to run by hand.
 
-If you ever need to set it up again: import the repo at vercel.com/new and
-press Deploy. Vercel picks up the Next.js config on its own.
+I
 
-## A note on the TEDx branding
-
-TED has rules about this and we have to follow them to keep the licence:
-
-- "TEDx" is always red, "MIST" never is, and there's no space between them
-- The footer line "This independent TEDx event is operated under license from
-  TED" has to stay
-- Red, black and white only. The palette isn't unfinished, it's deliberate.
