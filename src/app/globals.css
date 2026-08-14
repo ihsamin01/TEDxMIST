@@ -1,26 +1,214 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+/* ---------------------------------------------------------------------------
+ * Design tokens
+ * TED red is #EB0028 and is the only accent colour on the site, per the TEDx
+ * brand guidelines. Everything else is black, white and grey.
+ * ------------------------------------------------------------------------ */
+
+@theme {
+  --color-ted: #eb0028;
+  --color-ted-dark: #b8001f;
+
+  --color-ink: #0a0a0a;
+  --color-ink-soft: #141414;
+  --color-line: #262626;
+  --color-muted: #a1a1a1;
+
+  --font-sans: var(--font-inter), Helvetica, Arial, sans-serif;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
+/* ---------------------------------------------------------------------------
+ * Base
+ * ------------------------------------------------------------------------ */
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+html {
+  scroll-behavior: smooth;
+  /* Stops the sticky nav from covering a section heading when you jump to it. */
+  scroll-padding-top: 6rem;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--color-ink);
+  color: #ffffff;
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  /* Nothing on the page is allowed to cause sideways scrolling. */
+  overflow-x: hidden;
+}
+
+::selection {
+  background: var(--color-ted);
+  color: #ffffff;
+}
+
+:focus-visible {
+  outline: 2px solid var(--color-ted);
+  outline-offset: 3px;
+}
+
+/* ---------------------------------------------------------------------------
+ * Reveal-on-scroll
+ * Elements marked [data-reveal] start dimmed and slide up once they enter the
+ * viewport. The class is added by an IntersectionObserver in <Reveal />.
+ * ------------------------------------------------------------------------ */
+
+[data-reveal] {
+  opacity: 0;
+  transform: translateY(26px);
+  transition:
+    opacity 0.75s cubic-bezier(0.16, 1, 0.3, 1),
+    transform 0.75s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+[data-reveal].is-visible {
+  opacity: 1;
+  transform: none;
+}
+
+/* ---------------------------------------------------------------------------
+ * Echo rings
+ * The hero backdrop: concentric rings pushing outwards from a single point,
+ * which is the "Echoes of Tomorrow" theme drawn literally.
+ * ------------------------------------------------------------------------ */
+
+@keyframes echo-out {
+  0% {
+    transform: scale(0.3);
+    opacity: 0;
+  }
+  12% {
+    opacity: 0.6;
+  }
+  100% {
+    transform: scale(2);
+    opacity: 0;
+  }
+}
+
+.echo-ring {
+  animation: echo-out 9s cubic-bezier(0.22, 0.61, 0.36, 1) infinite;
+}
+
+/* The centre dot breathes so the hero is never completely still. */
+@keyframes pulse-dot {
+  0%,
+  100% {
+    transform: translate(-50%, -50%) scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: translate(-50%, -50%) scale(1.35);
+    opacity: 0.75;
+  }
+}
+
+.pulse-dot {
+  animation: pulse-dot 3.5s ease-in-out infinite;
+}
+
+/* ---------------------------------------------------------------------------
+ * Marquee
+ * A slow horizontal ticker of theme words. The track holds two identical
+ * copies of the content and slides exactly one copy's width, so the loop is
+ * seamless.
+ * ------------------------------------------------------------------------ */
+
+@keyframes marquee-slide {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+.marquee-track {
+  animation: marquee-slide 42s linear infinite;
+}
+
+/* Pausing on hover lets people actually read a word that caught their eye. */
+.marquee:hover .marquee-track {
+  animation-play-state: paused;
+}
+
+/* ---------------------------------------------------------------------------
+ * Text effects
+ * ------------------------------------------------------------------------ */
+
+/* Outlined display type — used for the second half of the hero headline. */
+.text-outline {
+  color: transparent;
+  -webkit-text-stroke: 1.5px var(--color-ted);
+}
+
+@media (min-width: 768px) {
+  .text-outline {
+    -webkit-text-stroke-width: 2.5px;
+  }
+}
+
+/* Hero headline letters rise into place one after another on first paint. */
+@keyframes rise-in {
+  from {
+    opacity: 0;
+    transform: translateY(0.35em);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.rise-in {
+  opacity: 0;
+  animation: rise-in 0.9s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+/* ---------------------------------------------------------------------------
+ * Grain
+ * A faint static texture over the whole page. It stops the large flat black
+ * areas from banding on cheap screens and gives the site a printed feel.
+ * ------------------------------------------------------------------------ */
+
+.grain::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  pointer-events: none;
+  opacity: 0.035;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+/* ---------------------------------------------------------------------------
+ * Reduced motion
+ * Anyone who has asked their OS for less motion gets a still, complete page.
+ * ------------------------------------------------------------------------ */
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  [data-reveal] {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+
+  .echo-ring {
+    animation: none;
+    opacity: 0.16;
+  }
+
+  .pulse-dot,
+  .marquee-track {
+    animation: none;
+  }
+
+  .rise-in {
+    opacity: 1;
+    animation: none;
+  }
 }

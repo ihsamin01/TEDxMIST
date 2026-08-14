@@ -1,0 +1,301 @@
+/**
+ * ============================================================================
+ *  TEDxMIST — SINGLE SOURCE OF TRUTH FOR ALL SITE CONTENT
+ * ============================================================================
+ *  Everything shown on the website is edited from this one file.
+ *  You never need to touch the components to change text, dates or people.
+ *
+ *  After saving a change here, the dev server refreshes automatically.
+ * ============================================================================
+ */
+
+/* ---------------------------------------------------------------------------
+ * 1. THE BASICS
+ * ------------------------------------------------------------------------ */
+
+/**
+ * Note on types: the objects below are deliberately NOT declared `as const`.
+ * With `as const`, a field left as "" gets the literal type `""`, TypeScript
+ * then decides any `if (x)` check around it can never pass, and the build
+ * fails the moment you fill that field in. Plain `string` keeps every field
+ * genuinely editable.
+ */
+export const event: {
+  name: string;
+  theme: string;
+  tagline: string;
+  startsAt: string;
+  dateLabel: string;
+  timeLabel: string;
+  venue: { name: string; short: string; address: string; mapUrl: string };
+  seats: number;
+  organizer: { name: string; role: string; affiliation: string };
+  contact: { email: string; phone: string };
+} = {
+  name: "TEDxMIST",
+  theme: "Echoes of Tomorrow",
+  tagline: "Today's choices shape the future we all inherit.",
+
+  /**
+   * The moment the countdown counts down to.
+   * Format: YYYY-MM-DDTHH:mm:ss+06:00   ( +06:00 = Bangladesh Standard Time )
+   * Change the time here if your doors open at a different hour.
+   */
+  startsAt: "2026-11-19T10:00:00+06:00",
+
+  /** Shown as plain text in the hero and the schedule heading. */
+  dateLabel: "19 November 2026",
+  timeLabel: "10:00 AM — 5:00 PM",
+
+  venue: {
+    name: "Military Institute of Science and Technology (MIST)",
+    short: "MIST, Dhaka",
+    address: "Mirpur Cantonment, Dhaka, Bangladesh",
+    /** Used by the "View on map" link in the footer. */
+    mapUrl: "https://maps.google.com/?q=Military+Institute+of+Science+and+Technology+Dhaka",
+  },
+
+  /** Capacity cap set by the TEDx University licence. */
+  seats: 100,
+
+  organizer: {
+    name: "Isbatul Haque Samin",
+    role: "Licensee & Lead Organizer",
+    affiliation: "Computer Science and Engineering, MIST",
+  },
+
+  contact: {
+    email: "hello@tedxmist.com",
+    phone: "",
+  },
+};
+
+/* ---------------------------------------------------------------------------
+ * 2. REGISTRATION
+ * ------------------------------------------------------------------------ */
+
+export const registration: {
+  formUrl: string;
+  isOpen: boolean;
+  note: string;
+} = {
+  /**
+   * Paste your external form link here (Google Form, Microsoft Form, Luma...).
+   * While this is empty the button renders disabled and says "Opening soon",
+   * so the site is safe to publish before the form exists.
+   */
+  formUrl: "",
+
+  /** Set to false the moment you stop taking sign-ups. */
+  isOpen: true,
+
+  /** Small line printed under the button. */
+  note: `Limited to ${event.seats} in-person seats, allocated first come first served.`,
+};
+
+/* ---------------------------------------------------------------------------
+ * 3. ABOUT COPY
+ * ------------------------------------------------------------------------ */
+
+export const about = {
+  /** Required TED wording explaining what a TEDx event actually is. */
+  whatIsTedx: `In the spirit of ideas worth spreading, TEDx is a program of local, self-organized events that bring people together to share a TED-like experience. At a TEDx event, TED Talks video and live speakers combine to spark deep discussion and connection. These local, self-organized events are branded TEDx, where x = independently organized TED event.`,
+
+  /** Your own paragraph about this specific event. */
+  ourEvent: `TEDxMIST brings that format to Mirpur Cantonment for the first time. Organized independently by students of the Military Institute of Science and Technology, it gathers engineers, researchers, artists, founders and storytellers from across Bangladesh onto one stage for a single day of talks — and puts an audience of a hundred people in the room to argue with them afterwards.`,
+
+  /** What the theme means. Shown in its own highlighted block. */
+  themeMeaning: `An echo is something you set in motion and then live inside. Every decision made today — a line of code, a policy, a design, a choice to speak up or stay quiet — travels outward and returns to a generation that had no say in making it. "Echoes of Tomorrow" asks our speakers a deliberately uncomfortable question: what exactly are you sending forward, and who will have to hear it?`,
+} as const;
+
+/* ---------------------------------------------------------------------------
+ * 4. SPEAKERS
+ * ------------------------------------------------------------------------ */
+
+export type Speaker = {
+  name: string;
+  /** Job title / what they do. */
+  title: string;
+  /** The title of their talk. */
+  topic: string;
+  /** Two or three sentences. */
+  bio: string;
+  /**
+   * Optional headshot. Drop the image in the `public/speakers/` folder and
+   * write the path here, e.g. "/speakers/ayesha.jpg".
+   * If left out, the card shows their initials on a red gradient instead —
+   * which looks intentional, so unconfirmed photos are not a problem.
+   */
+  photo?: string;
+};
+
+/**
+ * Replace these with your real speakers as they get confirmed.
+ * Add or delete entries freely — the grid reflows on its own.
+ */
+export const speakers: Speaker[] = [
+  {
+    name: "Speaker One",
+    title: "Job title, Organization",
+    topic: "The title of their talk goes here",
+    bio: "Two or three sentences about who they are and why this audience should listen to them. Keep every bio roughly the same length so the cards line up neatly.",
+  },
+  {
+    name: "Speaker Two",
+    title: "Job title, Organization",
+    topic: "The title of their talk goes here",
+    bio: "Two or three sentences about who they are and why this audience should listen to them. Keep every bio roughly the same length so the cards line up neatly.",
+  },
+  {
+    name: "Speaker Three",
+    title: "Job title, Organization",
+    topic: "The title of their talk goes here",
+    bio: "Two or three sentences about who they are and why this audience should listen to them. Keep every bio roughly the same length so the cards line up neatly.",
+  },
+  {
+    name: "Speaker Four",
+    title: "Job title, Organization",
+    topic: "The title of their talk goes here",
+    bio: "Two or three sentences about who they are and why this audience should listen to them. Keep every bio roughly the same length so the cards line up neatly.",
+  },
+  {
+    name: "Speaker Five",
+    title: "Job title, Organization",
+    topic: "The title of their talk goes here",
+    bio: "Two or three sentences about who they are and why this audience should listen to them. Keep every bio roughly the same length so the cards line up neatly.",
+  },
+  {
+    name: "Speaker Six",
+    title: "Job title, Organization",
+    topic: "The title of their talk goes here",
+    bio: "Two or three sentences about who they are and why this audience should listen to them. Keep every bio roughly the same length so the cards line up neatly.",
+  },
+];
+
+/* ---------------------------------------------------------------------------
+ * 5. SCHEDULE
+ * ------------------------------------------------------------------------ */
+
+export type Slot = {
+  time: string;
+  title: string;
+  detail?: string;
+  /** `true` draws the slot in TED red — use it for the talk sessions. */
+  highlight?: boolean;
+};
+
+/** Placeholder running order. Edit the times and titles as the day firms up. */
+export const schedule: Slot[] = [
+  {
+    time: "09:30",
+    title: "Registration & Welcome Coffee",
+    detail: "Badge pickup at the auditorium lobby.",
+  },
+  {
+    time: "10:00",
+    title: "Opening Remarks",
+    detail: "A word from the organizing team and the MIST administration.",
+  },
+  {
+    time: "10:20",
+    title: "Session One — Foundations",
+    detail: "Three talks, followed by a short TED Talk screening.",
+    highlight: true,
+  },
+  {
+    time: "12:00",
+    title: "Lunch & Networking",
+    detail: "Prayer space available.",
+  },
+  {
+    time: "13:30",
+    title: "Session Two — Signals",
+    detail: "Three talks exploring what today is already sending forward.",
+    highlight: true,
+  },
+  {
+    time: "15:00",
+    title: "Interactive Break",
+    detail: "Installations, sponsor booths and coffee.",
+  },
+  {
+    time: "15:45",
+    title: "Session Three — Echoes",
+    detail: "Closing talks and an on-stage conversation with the speakers.",
+    highlight: true,
+  },
+  {
+    time: "16:45",
+    title: "Closing & Group Photo",
+  },
+];
+
+/* ---------------------------------------------------------------------------
+ * 6. ORGANIZING TEAM
+ * ------------------------------------------------------------------------ */
+
+export type Member = {
+  name: string;
+  role: string;
+  photo?: string;
+};
+
+export const team: Member[] = [
+  {
+    name: "Isbatul Haque Samin",
+    role: "Licensee & Lead Organizer",
+  },
+  { name: "Team Member", role: "Curation" },
+  { name: "Team Member", role: "Sponsorship" },
+  { name: "Team Member", role: "Design & Branding" },
+  { name: "Team Member", role: "Logistics" },
+  { name: "Team Member", role: "Communications" },
+];
+
+/* ---------------------------------------------------------------------------
+ * 7. SOCIAL LINKS
+ * ------------------------------------------------------------------------ */
+
+/** Leave a url as "" and that icon simply will not render. */
+export const socials: {
+  facebook: string;
+  instagram: string;
+  linkedin: string;
+  youtube: string;
+  ted: string;
+} = {
+  facebook: "",
+  instagram: "",
+  linkedin: "",
+  youtube: "",
+  /** Your official listing on TED's own site, once TED publishes it. */
+  ted: "https://www.ted.com/tedx/events",
+};
+
+/* ---------------------------------------------------------------------------
+ * 8. NAVIGATION
+ * ------------------------------------------------------------------------ */
+
+export const navLinks = [
+  { label: "About", href: "#about" },
+  { label: "Speakers", href: "#speakers" },
+  { label: "Schedule", href: "#schedule" },
+  { label: "Team", href: "#team" },
+] as const;
+
+/* ---------------------------------------------------------------------------
+ * 9. MARQUEE
+ * ------------------------------------------------------------------------ */
+
+/**
+ * The words that scroll past in the ticker strips between sections.
+ * Keep them short — one or two words each reads best in motion.
+ */
+export const marqueeWords: string[] = [
+  "Ideas worth spreading",
+  "Echoes of Tomorrow",
+  "One stage",
+  "One hundred seats",
+  "MIST, Dhaka",
+  "19 November 2026",
+];
