@@ -16,7 +16,7 @@ npm install
 npm run dev
 ```
 
-Open http://localhost:3000.
+Open https://tedxmist.vercel.app/
 
 ## Editing the content
 
