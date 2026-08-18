@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { registration } from "@/config/event";
 
 type Props = {
@@ -6,13 +7,10 @@ type Props = {
 };
 
 /**
- * The one button that sends people to the external registration form.
+ * The one button that sends people to the registration form at /register.
  *
- * It has three states, all driven from config/event.ts, so the site is safe to
- * publish before the form is ready:
- *   - registration closed        -> disabled, "Registration closed"
- *   - open but no URL set yet    -> disabled, "Registration opening soon"
- *   - open with a URL            -> live link, opens in a new tab
+ * When `registration.isOpen` is false in config/event.ts it renders disabled
+ * instead, so closing sign-ups is a one-line change.
  */
 export default function RegisterButton({ size = "md", className = "" }: Props) {
   const padding = size === "lg" ? "px-10 py-5 text-lg" : "px-7 py-3.5 text-base";
@@ -26,19 +24,9 @@ export default function RegisterButton({ size = "md", className = "" }: Props) {
     );
   }
 
-  if (!registration.formUrl) {
-    return (
-      <span className={`${base} cursor-not-allowed bg-line text-muted`}>
-        Registration opening soon
-      </span>
-    );
-  }
-
   return (
-    <a
-      href={registration.formUrl}
-      target="_blank"
-      rel="noopener noreferrer"
+    <Link
+      href="/register"
       className={`${base} bg-ted text-white hover:-translate-y-0.5 hover:bg-ted-dark hover:shadow-[0_10px_30px_-8px_rgba(235,0,40,0.6)]`}
     >
       Reserve your seat
@@ -54,6 +42,6 @@ export default function RegisterButton({ size = "md", className = "" }: Props) {
       >
         <path d="M5 12h14M13 6l6 6-6 6" />
       </svg>
-    </a>
+    </Link>
   );
 }

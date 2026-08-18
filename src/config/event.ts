@@ -65,7 +65,8 @@ export const event: {
   },
 
   contact: {
-    email: "hello@tedxmist.com",
+    /** Shown in the footer, and used as reply-to on confirmation emails. */
+    email: "tedximistuniversity@gmail.com",
     phone: "",
   },
 };
@@ -75,19 +76,30 @@ export const event: {
  * ------------------------------------------------------------------------ */
 
 export const registration: {
-  formUrl: string;
   isOpen: boolean;
+  fee: number;
+  currency: string;
+  paymentMethods: string[];
+  paymentNumber: string;
   note: string;
 } = {
-  /**
-   * Paste your external form link here (Google Form, Microsoft Form, Luma...).
-   * While this is empty the button renders disabled and says "Opening soon",
-   * so the site is safe to publish before the form exists.
-   */
-  formUrl: "",
-
   /** Set to false the moment you stop taking sign-ups. */
   isOpen: true,
+
+  /** Registration fee per seat. Set to 0 for a free event. */
+  fee: 500,
+
+  /** Printed in front of the fee. */
+  currency: "BDT",
+
+  /** The options in the "how did you pay" dropdown on the form. */
+  paymentMethods: ["bKash", "Nagad", "Rocket", "Bank transfer"],
+
+  /**
+   * The number attendees send the fee to, shown on the registration page.
+   * Leave it as "" and the payment instructions box is hidden.
+   */
+  paymentNumber: "",
 
   /** Small line printed under the button. */
   note: `Limited to ${event.seats} in-person seats, allocated first come first served.`,

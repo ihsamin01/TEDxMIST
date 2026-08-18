@@ -30,9 +30,66 @@ A few things worth knowing:
 - Speaker photos are optional. Drop images in `public/speakers/` and add the
   path to the speaker, or leave it out and the card shows their initials
   instead.
-- The registration button stays greyed out until you put a form link in
-  `registration.formUrl`, so it's safe to have the site live before the form
-  exists.
+- Set `registration.isOpen` to `false` to grey out the register button and
+  close the form.
+- The fee, the bKash/Nagad number and the payment methods on the form all come
+  from the `registration` block.
+
+## Registrations
+
+Sign-ups happen on `/register` and land in a Supabase table. `/admin` shows
+them as a table you can search, filter and export.
+
+Set it up once:
+
+1. Make a project at supabase.com.
+2. Open the SQL editor and run the files in `supabase/migrations/` in order,
+   `0001` first.
+3. Copy `.env.local.example` to `.env.local` and fill it in. The Supabase URL
+   and secret key are under Project Settings → API Keys. `ADMIN_PASSWORD` is
+   whatever you want the team to type at `/admin`.
+4. Add the same variables in Vercel, under Settings → Environment Variables,
+   then redeploy.
+
+Until those variables exist the form politely says "opening soon" instead of
+crashing, so the site is safe to deploy before Supabase is ready.
+
+Day to day:
+
+- `/admin` lists everyone, newest first, with a Pending / Confirmed / Rejected
+  dropdown on each row. Use it to mark a transaction ID as verified.
+- "Download CSV" gives you the whole table as a spreadsheet.
+- The form stops accepting people at 100 on its own. Rejected rows give their
+  seat back.
+- The same email or the same transaction ID cannot be used twice.
+
+The secret key bypasses the database's row level security, so it must stay
+server-side. Never rename it to `NEXT_PUBLIC_` anything.
+
+## Confirmation emails
+
+Moving somebody to **Confirmed** in `/admin` emails them their ticket number,
+the event details, what they filled in, and what to bring. It sends once —
+`confirmation_sent_at` on the row stops a second confirm from emailing them
+again. There is a "resend" link under the dropdown if a send fails.
+
+Mail goes out through Gmail's SMTP server, from the event's own Gmail account.
+To set it up:
+
+1. Sign in to that Gmail account and turn on 2-Step Verification. App
+   passwords do not exist without it.
+2. Google Account → Security → App passwords. Make one and copy it.
+3. Put the address in `GMAIL_USER` and the app password in
+   `GMAIL_APP_PASSWORD`. It is not the account's normal password, and the
+   normal password will not work.
+
+Free Gmail sends about 500 messages a day, which is well clear of a 100-seat
+room. Without those two variables the admin table shows a banner saying no
+emails are going out; confirming still works, nobody is just told about it.
+
+The template lives in `src/lib/email.ts`. It reads the date, venue and map
+link from `src/config/event.ts`, so correcting the schedule corrects the
+email too.
 
 ## Deploying
 

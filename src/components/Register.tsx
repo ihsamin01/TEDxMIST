@@ -26,8 +26,7 @@ export default function Register() {
         <p className="mx-auto mt-7 max-w-xl text-base leading-relaxed text-pretty text-white/75 sm:text-lg">
           Our TEDx University licence caps attendance at {event.seats} people,
           so the room stays small enough that you can actually talk to the
-          speakers afterwards. Registration is handled through a short external
-          form.
+          speakers afterwards. Registration takes about a minute.
         </p>
 
         <div className="mt-10 flex justify-center">
