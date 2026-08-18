@@ -212,10 +212,18 @@ export async function sendConfirmationEmail(
     await transport.sendMail({
       from,
       to: reg.email,
-      subject: `Your seat at ${event.name} — ticket ${ticketCode(reg.ticket_no)}`,
+      subject: `${event.name} registration confirmed — ticket ${ticketCode(reg.ticket_no)}`,
       html: confirmationEmailHtml(reg),
       text: text(reg),
       replyTo: event.contact.email || user,
+      headers: {
+        // An unsubscribe route the filter can see counts in our favour while
+        // the sending account is still new and has no reputation.
+        "List-Unsubscribe": `<mailto:${user}?subject=Unsubscribe>`,
+        // Standard marker for machine-generated mail. Mostly it stops holiday
+        // auto-responders from replying to us.
+        "Auto-Submitted": "auto-generated",
+      },
     });
 
     return { ok: true };
