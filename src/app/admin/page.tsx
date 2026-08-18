@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import StatusSelect from "@/components/admin/StatusSelect";
 import LoginForm from "@/components/admin/LoginForm";
-import { event } from "@/config/event";
+import { registration } from "@/config/event";
 import { isAdminConfigured, isSignedIn } from "@/lib/admin-auth";
 import { isEmailConfigured, ticketCode } from "@/lib/email";
 import { isSupabaseConfigured, supabase } from "@/lib/supabase";
@@ -198,16 +198,23 @@ export default async function AdminPage({
         </p>
       )}
 
-      {/* Counts. "Seats left" counts everything that is not rejected, the same
-          rule the registration form uses to decide when the room is full. */}
-      <div className="mt-8 grid grid-cols-2 gap-3 sm:grid-cols-4">
+      {/* Counts. "Seats left" only appears once a capacity has been agreed and
+          written into config/event.ts; it counts everything not rejected, the
+          same rule the form uses to decide when the room is full. */}
+      <div
+        className={`mt-8 grid grid-cols-2 gap-3 ${
+          registration.capacity === null ? "sm:grid-cols-3" : "sm:grid-cols-4"
+        }`}
+      >
         <Stat label="Total" value={rows.length} />
         <Stat label="Confirmed" value={confirmed} />
         <Stat label="Pending" value={pending} />
-        <Stat
-          label="Seats left"
-          value={Math.max(0, event.seats - (confirmed + pending))}
-        />
+        {registration.capacity !== null && (
+          <Stat
+            label="Seats left"
+            value={Math.max(0, registration.capacity - (confirmed + pending))}
+          />
+        )}
       </div>
 
       {/* Search and status filter. A plain GET form, so the current view is

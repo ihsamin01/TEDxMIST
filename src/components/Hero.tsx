@@ -57,15 +57,14 @@ export default function Hero() {
           {event.tagline}
         </p>
 
-        {/* Date / venue / seats */}
+        {/* Date / time / venue */}
         <div
-          className="rise-in mt-10 grid w-full max-w-2xl grid-cols-2 gap-y-6 border-y border-line py-6 sm:mt-12 sm:grid-cols-4 sm:divide-x sm:divide-line sm:py-7"
+          className="rise-in mt-10 grid w-full max-w-2xl grid-cols-2 gap-y-6 border-y border-line py-6 sm:mt-12 sm:grid-cols-3 sm:divide-x sm:divide-line sm:py-7"
           style={{ animationDelay: "0.54s" }}
         >
           <Meta label="Date" value={event.dateLabel} />
           <Meta label="Time" value={event.timeLabel} />
           <Meta label="Venue" value={event.venue.short} />
-          <Meta label="Seats" value={`${event.seats} only`} />
         </div>
 
         {/* Countdown */}

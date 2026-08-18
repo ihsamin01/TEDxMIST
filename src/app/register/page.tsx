@@ -7,7 +7,7 @@ import { seatsLeft } from "./actions";
 
 export const metadata: Metadata = {
   title: "Register",
-  description: `Reserve one of the ${event.seats} seats at ${event.name} — ${event.theme}, ${event.dateLabel} at ${event.venue.short}.`,
+  description: `Reserve your seat at ${event.name} — ${event.theme}, ${event.dateLabel} at ${event.venue.short}.`,
 };
 
 /** The seat count has to be read fresh on every visit. */
@@ -78,16 +78,15 @@ export default async function RegisterPage() {
           </h1>
 
           <p className="mt-6 max-w-xl text-base leading-relaxed text-pretty text-white/70 sm:text-lg">
-            {event.theme} — {event.dateLabel} at {event.venue.short}. The room
-            holds {event.seats} people, so we need a few details before we can
-            hold one for you.
+            {event.theme} — {event.dateLabel} at {event.venue.short}. We need
+            a few details before we can hold a seat for you.
           </p>
 
           {/* Live seat counter. Hidden if the database is unreachable. */}
           {remaining !== null && remaining > 0 && (
             <p className="mt-7 inline-flex items-center gap-2.5 rounded-full border border-line bg-ink-soft px-5 py-2.5 text-sm font-semibold">
               <span aria-hidden className="h-2 w-2 rounded-full bg-ted" />
-              {remaining} of {event.seats} seats left
+              {remaining} seats left
             </p>
           )}
 
@@ -105,7 +104,7 @@ export default async function RegisterPage() {
             ) : soldOut ? (
               <Notice
                 title="All seats are taken"
-                body={`Our TEDx licence caps the room at ${event.seats} people. Email ${event.contact.email} to be added to the waiting list.`}
+                body={`Registration is full. Email ${event.contact.email} to be added to the waiting list.`}
               />
             ) : (
               <RegisterForm />

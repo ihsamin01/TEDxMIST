@@ -28,7 +28,6 @@ export const event: {
   dateLabel: string;
   timeLabel: string;
   venue: { name: string; short: string; address: string; mapUrl: string };
-  seats: number;
   organizer: { name: string; role: string; affiliation: string };
   contact: { email: string; phone: string };
 } = {
@@ -55,9 +54,6 @@ export const event: {
     mapUrl: "https://maps.google.com/?q=Military+Institute+of+Science+and+Technology+Dhaka",
   },
 
-  /** Capacity cap set by the TEDx University licence. */
-  seats: 100,
-
   organizer: {
     name: "Isbatul Haque Samin",
     role: "Licensee & Lead Organizer",
@@ -77,6 +73,7 @@ export const event: {
 
 export const registration: {
   isOpen: boolean;
+  capacity: number | null;
   fee: number;
   currency: string;
   paymentMethods: string[];
@@ -85,6 +82,14 @@ export const registration: {
 } = {
   /** Set to false the moment you stop taking sign-ups. */
   isOpen: true,
+
+  /**
+   * How many people fit in the room. While this is null the site never
+   * mentions a number, no counter is shown, and sign-ups are not capped.
+   * Put the agreed figure here and the seats-left line and the automatic
+   * cut-off both come back on their own.
+   */
+  capacity: null,
 
   /** Registration fee per seat. Set to 0 for a free event. */
   fee: 500,
@@ -102,7 +107,7 @@ export const registration: {
   paymentNumber: "",
 
   /** Small line printed under the button. */
-  note: `Limited to ${event.seats} in-person seats, allocated first come first served.`,
+  note: "In-person seats are limited and allocated first come, first served.",
 };
 
 /* ---------------------------------------------------------------------------
@@ -307,7 +312,7 @@ export const marqueeWords: string[] = [
   "Ideas worth spreading",
   "Echoes of Tomorrow",
   "One stage",
-  "One hundred seats",
+  "One day",
   "MIST, Dhaka",
   "19 November 2026",
 ];

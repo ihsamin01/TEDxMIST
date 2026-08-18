@@ -1,6 +1,6 @@
 import RegisterButton from "./RegisterButton";
 import Reveal from "./Reveal";
-import { event, registration } from "@/config/event";
+import { registration } from "@/config/event";
 
 export default function Register() {
   return (
@@ -20,13 +20,13 @@ export default function Register() {
         </p>
 
         <h2 className="text-[clamp(2rem,7.5vw,3.75rem)] leading-[1.05] font-black tracking-tight text-balance">
-          {event.seats} seats. One day. One room.
+          One day. One room. One stage.
         </h2>
 
         <p className="mx-auto mt-7 max-w-xl text-base leading-relaxed text-pretty text-white/75 sm:text-lg">
-          Our TEDx University licence caps attendance at {event.seats} people,
-          so the room stays small enough that you can actually talk to the
-          speakers afterwards. Registration takes about a minute.
+          Attendance is kept deliberately small, so the room stays intimate
+          enough that you can actually talk to the speakers afterwards.
+          Registration takes about a minute.
         </p>
 
         <div className="mt-10 flex justify-center">

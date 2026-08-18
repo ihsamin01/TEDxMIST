@@ -106,29 +106,31 @@ export async function register(
   values.linkedin = withScheme(values.linkedin);
   values.facebook = withScheme(values.facebook);
 
-  // 4. The licence caps the room, so stop taking sign-ups at capacity.
-  //    Rejected rows free their seat back up.
+  // 4. Stop taking sign-ups once the room is full. Only applies while
+  //    registration.capacity is set; rejected rows free their seat back up.
   const db = supabase();
 
-  const { count, error: countError } = await db
-    .from("registrations")
-    .select("id", { count: "exact", head: true })
-    .neq("status", "rejected");
+  if (registration.capacity !== null) {
+    const { count, error: countError } = await db
+      .from("registrations")
+      .select("id", { count: "exact", head: true })
+      .neq("status", "rejected");
 
-  if (countError) {
-    return {
-      ok: false,
-      message: "Could not reach the database. Please try again in a moment.",
-      errors: {},
-    };
-  }
+    if (countError) {
+      return {
+        ok: false,
+        message: "Could not reach the database. Please try again in a moment.",
+        errors: {},
+      };
+    }
 
-  if ((count ?? 0) >= event.seats) {
-    return {
-      ok: false,
-      message: `All ${event.seats} seats are taken. Email ${event.contact.email} to join the waiting list.`,
-      errors: {},
-    };
+    if ((count ?? 0) >= registration.capacity) {
+      return {
+        ok: false,
+        message: `Registration is full. Email ${event.contact.email} to join the waiting list.`,
+        errors: {},
+      };
+    }
   }
 
   // 5. Save.
@@ -181,8 +183,14 @@ export async function register(
   };
 }
 
-/** Seats left, for the line above the form. Never negative. */
+/**
+ * Seats left, for the line above the form. Null whenever there is no agreed
+ * capacity, or the database cannot be reached — the page hides the line in
+ * both cases rather than guessing a number.
+ */
 export async function seatsLeft(): Promise<number | null> {
+  if (registration.capacity === null) return null;
+
   try {
     const { count, error } = await supabase()
       .from("registrations")
@@ -190,7 +198,7 @@ export async function seatsLeft(): Promise<number | null> {
       .neq("status", "rejected");
 
     if (error) return null;
-    return Math.max(0, event.seats - (count ?? 0));
+    return Math.max(0, registration.capacity - (count ?? 0));
   } catch {
     return null;
   }

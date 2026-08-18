@@ -2,7 +2,7 @@
 
 import Reveal from "./Reveal";
 import { useCountUp } from "@/hooks/useScrollUi";
-import { event, schedule, speakers } from "@/config/event";
+import { schedule, speakers } from "@/config/event";
 
 function Stat({
   value,
@@ -39,10 +39,9 @@ export default function Stats() {
   return (
     <section className="border-t border-line px-5 py-16 sm:px-6 md:py-24">
       <Reveal>
-        <div className="mx-auto grid max-w-4xl grid-cols-2 gap-y-12 sm:grid-cols-4">
+        <div className="mx-auto grid max-w-4xl grid-cols-2 gap-y-12 sm:grid-cols-3">
           <Stat value={speakers.length} suffix="+" label="Speakers" />
           <Stat value={sessions} label="Sessions" />
-          <Stat value={event.seats} label="Seats" />
           <Stat value={1} label="Day" />
         </div>
       </Reveal>

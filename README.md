@@ -5,7 +5,6 @@ Military Institute of Science and Technology, Dhaka.
 
 **Theme:** Echoes of Tomorrow
 **Date:** 19 November 2026
-**Seats:** 100 (capped by our TEDx University licence)
 
 Built with Next.js and Tailwind.
 
@@ -59,8 +58,9 @@ Day to day:
 - `/admin` lists everyone, newest first, with a Pending / Confirmed / Rejected
   dropdown on each row. Use it to mark a transaction ID as verified.
 - "Download CSV" gives you the whole table as a spreadsheet.
-- The form stops accepting people at 100 on its own. Rejected rows give their
-  seat back.
+- Sign-ups are not capped. Put the agreed number in `registration.capacity`
+  and the form closes itself at that figure, shows a seats-left line and adds
+  a "seats left" count to the table. Rejected rows give their seat back.
 - The same email or the same transaction ID cannot be used twice.
 
 The secret key bypasses the database's row level security, so it must stay
@@ -83,9 +83,9 @@ To set it up:
    `GMAIL_APP_PASSWORD`. It is not the account's normal password, and the
    normal password will not work.
 
-Free Gmail sends about 500 messages a day, which is well clear of a 100-seat
-room. Without those two variables the admin table shows a banner saying no
-emails are going out; confirming still works, nobody is just told about it.
+Free Gmail sends about 500 messages a day, comfortably more than a room this
+size needs. Without those two variables the admin table shows a banner saying
+no emails are going out; confirming still works, nobody is just told about it.
 
 The template lives in `src/lib/email.ts`. It reads the date, venue and map
 link from `src/config/event.ts`, so correcting the schedule corrects the
