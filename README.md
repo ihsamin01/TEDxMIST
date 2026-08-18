@@ -96,5 +96,3 @@ email too.
 The site is on Vercel and redeploys itself whenever anything is pushed to
 `main`. Nothing to run by hand.
 
-I
-
