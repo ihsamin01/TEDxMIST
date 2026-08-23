@@ -43,7 +43,6 @@ export type Registration = {
   transaction_id: string;
   amount: number | null;
   emergency_contact: string;
-  linkedin: string | null;
   facebook: string | null;
   status: "pending" | "confirmed" | "rejected";
   /** Sequential, assigned by the database. Printed on the ticket. */

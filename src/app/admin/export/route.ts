@@ -19,7 +19,6 @@ const COLUMNS: Array<[keyof Registration, string]> = [
   ["transaction_id", "Transaction ID"],
   ["amount", "Amount"],
   ["emergency_contact", "Emergency contact"],
-  ["linkedin", "LinkedIn"],
   ["facebook", "Facebook"],
   ["status", "Status"],
   ["confirmation_sent_at", "Confirmation email sent"],

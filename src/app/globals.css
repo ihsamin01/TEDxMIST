@@ -26,6 +26,10 @@ html {
   scroll-behavior: smooth;
   /* Stops the sticky nav from covering a section heading when you jump to it. */
   scroll-padding-top: 6rem;
+  /* Tells the browser the page is dark, so anything it draws itself —
+     scrollbars, autofill, date pickers, the keyboard's own chrome — comes out
+     dark instead of white. */
+  color-scheme: dark;
 }
 
 body {

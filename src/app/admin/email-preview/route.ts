@@ -20,7 +20,6 @@ const SAMPLE: Registration = {
   transaction_id: "9F7K2LM4XQ",
   amount: 500,
   emergency_contact: "01812345678",
-  linkedin: null,
   facebook: null,
   status: "confirmed",
   ticket_no: 42,

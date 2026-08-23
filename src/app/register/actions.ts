@@ -22,11 +22,10 @@ const FIELDS = [
   "payment_method",
   "transaction_id",
   "emergency_contact",
-  "linkedin",
   "facebook",
 ] as const;
 
-const OPTIONAL = new Set(["linkedin", "facebook"]);
+const OPTIONAL = new Set(["facebook"]);
 
 const LABELS: Record<string, string> = {
   full_name: "Full name",
@@ -103,7 +102,6 @@ export async function register(
   const withScheme = (url: string) =>
     !url || /^https?:\/\//i.test(url) ? url : `https://${url}`;
 
-  values.linkedin = withScheme(values.linkedin);
   values.facebook = withScheme(values.facebook);
 
   // 4. Stop taking sign-ups once the room is full. Only applies while
@@ -146,7 +144,6 @@ export async function register(
     transaction_id: values.transaction_id,
     amount: registration.fee || null,
     emergency_contact: values.emergency_contact,
-    linkedin: values.linkedin || null,
     facebook: values.facebook || null,
   });
 

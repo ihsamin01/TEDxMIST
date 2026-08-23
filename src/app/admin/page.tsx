@@ -272,7 +272,7 @@ export default async function AdminPage({
               <Th>Method</Th>
               <Th>Transaction ID</Th>
               <Th>Emergency</Th>
-              <Th>Socials</Th>
+              <Th>Facebook</Th>
               <Th>Registered</Th>
               <Th>Status</Th>
             </tr>
@@ -310,10 +310,7 @@ export default async function AdminPage({
                 </Td>
                 <Td>{row.emergency_contact}</Td>
                 <Td>
-                  <span className="flex gap-3">
-                    <SocialLink href={row.linkedin} label="in" />
-                    <SocialLink href={row.facebook} label="fb" />
-                  </span>
+                  <SocialLink href={row.facebook} label="Profile" />
                 </Td>
                 <Td muted>
                   {new Date(row.created_at).toLocaleString("en-GB", {

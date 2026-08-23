@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useActionState, useState } from "react";
+import Select from "./Select";
 import { register } from "@/app/register/actions";
 import type { FormState } from "@/app/register/actions";
 import { event, registration } from "@/config/event";
@@ -58,22 +59,15 @@ function Field({
       </label>
 
       {options ? (
-        <select
+        <Select
           id={name}
           name={name}
           value={value}
-          onChange={(e) => onChange(e.target.value)}
-          aria-invalid={Boolean(error)}
-          aria-describedby={error ? `${name}-error` : undefined}
-          className={`${inputClass} ${fieldBorder(Boolean(error))} appearance-none`}
-        >
-          <option value="">Select one</option>
-          {options.map((option) => (
-            <option key={option} value={option}>
-              {option}
-            </option>
-          ))}
-        </select>
+          onChange={onChange}
+          options={options}
+          invalid={Boolean(error)}
+          describedBy={error ? `${name}-error` : undefined}
+        />
       ) : (
         <input
           id={name}
@@ -121,7 +115,6 @@ const BLANK = {
   payment_method: "",
   transaction_id: "",
   emergency_contact: "",
-  linkedin: "",
   facebook: "",
 };
 
@@ -313,7 +306,7 @@ export default function RegisterForm() {
       </fieldset>
 
       <fieldset className="grid gap-6 sm:grid-cols-2" disabled={pending}>
-        <Legend>Emergency contact and socials</Legend>
+        <Legend>Emergency contact</Legend>
 
         <Field
           name="emergency_contact"
@@ -326,16 +319,6 @@ export default function RegisterForm() {
           wide
         />
         <Field
-          name="linkedin"
-          label="LinkedIn"
-          type="url"
-          placeholder="https://linkedin.com/in/..."
-          optional
-          value={values.linkedin}
-          onChange={set("linkedin")}
-          error={error("linkedin")}
-        />
-        <Field
           name="facebook"
           label="Facebook"
           type="url"
@@ -344,6 +327,7 @@ export default function RegisterForm() {
           value={values.facebook}
           onChange={set("facebook")}
           error={error("facebook")}
+          wide
         />
       </fieldset>
 
