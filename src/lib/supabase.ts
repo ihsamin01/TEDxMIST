@@ -3,11 +3,8 @@ import "server-only";
 import { createClient } from "@supabase/supabase-js";
 
 /**
- * Server-side Supabase client.
- *
- * It uses the project's secret key, which bypasses row level security, so it
- * must never be imported from a Client Component. The `server-only` import
- * above turns that mistake into a build error rather than a leaked key.
+ * Server-side Supabase client. The secret key bypasses row level security, so
+ * this must never reach the browser. The `server-only` import enforces that.
  */
 
 const url = process.env.SUPABASE_URL;
@@ -28,7 +25,7 @@ export function supabase() {
   });
 }
 
-/** One attendee row, matching supabase/migrations/0001_registrations.sql. */
+/** One row of the registrations table. */
 export type Registration = {
   id: string;
   created_at: string;
@@ -45,8 +42,8 @@ export type Registration = {
   emergency_contact: string;
   facebook: string | null;
   status: "pending" | "confirmed" | "rejected";
-  /** Sequential, assigned by the database. Printed on the ticket. */
+  /** Assigned by the database. */
   ticket_no: number | null;
-  /** Null until the confirmation email has gone out. */
+  /** Null until the confirmation email is sent. */
   confirmation_sent_at: string | null;
 };

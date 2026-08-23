@@ -36,14 +36,10 @@ export type StatusResult = {
 };
 
 /**
- * Marks a registration pending / confirmed / rejected.
+ * Sets a registration to pending / confirmed / rejected. Confirming is what
+ * sends the email, and only the first time; `confirmation_sent_at` tracks it.
  *
- * Moving somebody to "confirmed" is what sends their confirmation email, and
- * it only happens once — `confirmation_sent_at` stops a second confirm from
- * emailing them again.
- *
- * Rendering the table behind a password is not a security boundary — this
- * action is a POST endpoint anyone can reach — so it re-checks the session.
+ * Re-checks the session because this is a POST endpoint anyone can hit.
  */
 export async function setStatus(
   id: string,
@@ -57,7 +53,7 @@ export async function setStatus(
 
   const db = supabase();
 
-  // Return the updated row so the email has the ticket number to print.
+  // Return the row so the email has the ticket number.
   const { data, error } = await db
     .from("registrations")
     .update({ status })
@@ -77,8 +73,7 @@ export async function setStatus(
   const sent = await sendConfirmationEmail(row);
 
   if (!sent.ok) {
-    // The status change stands; only the email failed. Saying so lets the
-    // organizer retry rather than assume the attendee has been told.
+    // Status saved, email didn't. Say so, so it can be retried.
     return { ok: true, emailed: false, error: sent.error };
   }
 

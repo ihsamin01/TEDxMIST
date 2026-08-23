@@ -3,14 +3,11 @@
 import { useEffect, useId, useRef, useState } from "react";
 
 /**
- * A dropdown that looks like the rest of the site.
+ * Dropdown. A native <select> would be less code, but phones draw its option
+ * list themselves, so on Android it opens white on our black page and CSS
+ * can't reach it.
  *
- * A native <select> would be less code, but phones draw its option list
- * themselves — on Android that means a white sheet in the middle of a black
- * page, which no amount of CSS can reach. This renders its own list instead.
- *
- * The chosen value rides along in a hidden input, so the surrounding <form>
- * and FormData behave exactly as they would with a real <select>.
+ * The value sits in a hidden input, so forms behave as with a real <select>.
  */
 
 type Props = {
@@ -36,7 +33,7 @@ export default function Select({
   id,
 }: Props) {
   const [open, setOpen] = useState(false);
-  /** Which option the keyboard is sitting on. */
+  /** Highlighted option. */
   const [active, setActive] = useState(0);
 
   const wrapper = useRef<HTMLDivElement>(null);
@@ -45,7 +42,7 @@ export default function Select({
   const buttonId = id ?? generatedId;
   const listId = `${buttonId}-list`;
 
-  // Close when the tap or click lands anywhere else.
+  // Close on a tap outside.
   useEffect(() => {
     if (!open) return;
 
@@ -57,13 +54,13 @@ export default function Select({
     return () => document.removeEventListener("pointerdown", onPointerDown);
   }, [open]);
 
-  // Keep the highlighted row in view while arrowing through a long list.
+  // Keep the highlighted row in view.
   useEffect(() => {
     if (!open) return;
     listbox.current?.children[active]?.scrollIntoView({ block: "nearest" });
   }, [open, active]);
 
-  /** Opening should land the highlight on whatever is already chosen. */
+  /** Open with the current value highlighted. */
   const openList = () => {
     const index = options.indexOf(value);
     setActive(index < 0 ? 0 : index);
@@ -124,7 +121,7 @@ export default function Select({
 
   return (
     <div ref={wrapper} className="relative">
-      {/* What the form actually submits. */}
+      {/* What gets submitted. */}
       <input type="hidden" name={name} value={value} />
 
       <button

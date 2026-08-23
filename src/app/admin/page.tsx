@@ -16,7 +16,7 @@ export const metadata: Metadata = {
 
 export const dynamic = "force-dynamic";
 
-/** The columns that free-text search looks through. */
+/** Columns the search box looks through. */
 const SEARCHABLE = [
   "full_name",
   "email",
@@ -74,7 +74,7 @@ function Td({
   );
 }
 
-/** Renders a profile link as a short label rather than a long raw URL. */
+/** Short label instead of a long raw URL. */
 function SocialLink({ href, label }: { href: string | null; label: string }) {
   if (!href) return null;
 
@@ -135,8 +135,7 @@ export default async function AdminPage({
   if (status !== "all") request = request.eq("status", status);
 
   if (query) {
-    // Commas separate the OR branches, so a comma in the query would change
-    // the filter's meaning. Strip them.
+    // Commas separate the OR branches, so strip them from the query.
     const safe = query.replace(/[,()]/g, " ").trim();
     request = request.or(SEARCHABLE.map((c) => `${c}.ilike.%${safe}%`).join(","));
   }
@@ -198,9 +197,7 @@ export default async function AdminPage({
         </p>
       )}
 
-      {/* Counts. "Seats left" only appears once a capacity has been agreed and
-          written into config/event.ts; it counts everything not rejected, the
-          same rule the form uses to decide when the room is full. */}
+      {/* "Seats left" only shows if registration.capacity is set. */}
       <div
         className={`mt-8 grid grid-cols-2 gap-3 ${
           registration.capacity === null ? "sm:grid-cols-3" : "sm:grid-cols-4"
@@ -217,8 +214,7 @@ export default async function AdminPage({
         )}
       </div>
 
-      {/* Search and status filter. A plain GET form, so the current view is
-          always a shareable URL. */}
+      {/* Plain GET form, so the current view is a shareable URL. */}
       <form className="mt-8 flex flex-wrap items-center gap-3">
         <input
           name="q"

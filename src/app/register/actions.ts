@@ -97,15 +97,14 @@ export async function register(
     return { ok: false, message: "Please fix the highlighted fields.", errors };
   }
 
-  // 3. People type "facebook.com/x" as often as the full URL. Without a
-  //    scheme the admin table would render it as a relative link.
+  // 3. People often type "facebook.com/x" with no https, which would make
+  //    the link in the admin table relative.
   const withScheme = (url: string) =>
     !url || /^https?:\/\//i.test(url) ? url : `https://${url}`;
 
   values.facebook = withScheme(values.facebook);
 
-  // 4. Stop taking sign-ups once the room is full. Only applies while
-  //    registration.capacity is set; rejected rows free their seat back up.
+  // 4. Stop at capacity, if one is set. Rejected rows free their seat.
   const db = supabase();
 
   if (registration.capacity !== null) {
@@ -148,8 +147,7 @@ export async function register(
   });
 
   if (error) {
-    // 23505 is Postgres' unique violation. Which index tripped tells us
-    // whether it was a reused email or a reused receipt.
+    // 23505 is a unique violation. The index name says which field.
     if (error.code === "23505") {
       const onEmail = `${error.message} ${error.details ?? ""}`.includes(
         "email",
@@ -181,9 +179,8 @@ export async function register(
 }
 
 /**
- * Seats left, for the line above the form. Null whenever there is no agreed
- * capacity, or the database cannot be reached — the page hides the line in
- * both cases rather than guessing a number.
+ * Seats left, for the line above the form. Null if there's no capacity set or
+ * the database is unreachable; the page hides the line either way.
  */
 export async function seatsLeft(): Promise<number | null> {
   if (registration.capacity === null) return null;

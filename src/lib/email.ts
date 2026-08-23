@@ -5,13 +5,9 @@ import { event } from "@/config/event";
 import type { Registration } from "./supabase";
 
 /**
- * The confirmation email an attendee gets the moment their payment is marked
- * confirmed in /admin.
- *
- * It goes out through Gmail's SMTP server, signed in as GMAIL_USER. That needs
- * an App Password, not the account's normal password: turn on 2-Step
- * Verification on the account, then create one under Google Account →
- * Security → App passwords.
+ * Confirmation email, sent when someone is marked confirmed in /admin.
+ * Goes through Gmail SMTP. GMAIL_APP_PASSWORD is a Google app password, not
+ * the account password. See the README.
  */
 
 const user = process.env.GMAIL_USER;
@@ -19,10 +15,10 @@ const pass = process.env.GMAIL_APP_PASSWORD?.replace(/\s/g, "");
 
 export const isEmailConfigured = Boolean(user && pass);
 
-/** What recipients see in the From line. */
+/** The From line. */
 const from = `${event.name} <${user}>`;
 
-/** The number printed on the ticket and checked at the gate. */
+/** Ticket number, shown at the gate. */
 export function ticketCode(ticketNo: number | null) {
   if (!ticketNo) return "—";
   return `TEDXMIST-${String(ticketNo).padStart(3, "0")}`;
@@ -31,10 +27,8 @@ export function ticketCode(ticketNo: number | null) {
 /* --------------------------------------------------------------------------
  * Template
  *
- * Email clients ignore most modern CSS, so this is 2004-style HTML: tables for
- * layout, inline styles, no external stylesheet. White background rather than
- * the site's black, because a lot of clients override dark backgrounds and
- * leave the text unreadable.
+ * Tables and inline styles, because email clients drop most CSS. White
+ * background, because many clients mangle dark ones.
  * ----------------------------------------------------------------------- */
 
 const RED = "#eb0028";
@@ -48,7 +42,7 @@ function row(label: string, value: string) {
     </tr>`;
 }
 
-/** Anything interpolated into the HTML is user-supplied, so escape it. */
+/** Everything here is user input, so escape it. */
 function esc(value: string | null) {
   return (value ?? "")
     .replace(/&/g, "&amp;")
@@ -146,7 +140,7 @@ export function confirmationEmailHtml(reg: Registration) {
 </html>`;
 }
 
-/** Plain-text version, for clients that refuse HTML and for spam scoring. */
+/** Plain-text fallback. Also helps with spam filters. */
 function text(reg: Registration) {
   return [
     `${event.name} — ${event.theme}`,
@@ -200,8 +194,7 @@ export async function sendConfirmationEmail(
   }
 
   try {
-    // Port 465 rather than 587: the connection is encrypted from the first
-    // byte, which behaves better on short-lived serverless invocations.
+    // 465 over 587, encrypted from the start. Works better on Vercel.
     const transport = nodemailer.createTransport({
       host: "smtp.gmail.com",
       port: 465,
@@ -217,11 +210,8 @@ export async function sendConfirmationEmail(
       text: text(reg),
       replyTo: event.contact.email || user,
       headers: {
-        // An unsubscribe route the filter can see counts in our favour while
-        // the sending account is still new and has no reputation.
+        // Both of these help a little with spam filtering.
         "List-Unsubscribe": `<mailto:${user}?subject=Unsubscribe>`,
-        // Standard marker for machine-generated mail. Mostly it stops holiday
-        // auto-responders from replying to us.
         "Auto-Submitted": "auto-generated",
       },
     });

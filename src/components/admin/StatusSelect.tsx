@@ -12,8 +12,8 @@ const STYLES: Record<Registration["status"], string> = {
 };
 
 /**
- * The payment column. Changing the value writes straight to the database, and
- * moving somebody to Confirmed is what sends their confirmation email.
+ * The payment column. Changing it writes straight to the database, and
+ * Confirmed is what sends the email.
  */
 export default function StatusSelect({
   id,
@@ -26,8 +26,7 @@ export default function StatusSelect({
 }) {
   const [pending, startTransition] = useTransition();
 
-  // Feedback for the change just made. The row's own `sentAt` covers the
-  // rest, so this is only about the current click.
+  // Only about the click just made; `sentAt` covers everything before.
   const [result, setResult] = useState<StatusResult | null>(null);
 
   const run = (action: () => Promise<StatusResult>) =>

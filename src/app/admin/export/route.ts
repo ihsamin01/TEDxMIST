@@ -4,7 +4,7 @@ import type { Registration } from "@/lib/supabase";
 
 export const dynamic = "force-dynamic";
 
-/** Column order in the exported file, with the heading each one gets. */
+/** Columns in the exported file, in order. */
 const COLUMNS: Array<[keyof Registration, string]> = [
   ["ticket_no", "Ticket"],
   ["created_at", "Registered at"],
@@ -27,17 +27,13 @@ const COLUMNS: Array<[keyof Registration, string]> = [
 function csvCell(value: unknown) {
   const text = value === null || value === undefined ? "" : String(value);
 
-  // A cell starting with one of these is run as a formula by Excel and
-  // Sheets. Prefixing an apostrophe keeps it as text.
+  // Excel runs a cell starting with these as a formula. Keep it text.
   const safe = /^[=+\-@\t\r]/.test(text) ? `'${text}` : text;
 
   return `"${safe.replace(/"/g, '""')}"`;
 }
 
-/**
- * GET /admin/export — the registrations table as a CSV file.
- * Opens as a spreadsheet in Excel, Numbers or Google Sheets.
- */
+/** GET /admin/export — the registrations table as a CSV. */
 export async function GET() {
   if (!(await isSignedIn())) {
     return new Response("Unauthorized", { status: 401 });
@@ -61,7 +57,7 @@ export async function GET() {
     ...rows.map((row) => COLUMNS.map(([key]) => csvCell(row[key])).join(",")),
   ].join("\r\n");
 
-  // The BOM makes Excel read the file as UTF-8, so Bangla names survive.
+  // BOM, so Excel reads it as UTF-8 and Bangla names survive.
   return new Response(`﻿${csv}`, {
     headers: {
       "Content-Type": "text/csv; charset=utf-8",

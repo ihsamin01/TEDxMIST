@@ -10,10 +10,10 @@ export const metadata: Metadata = {
   description: `Reserve your seat at ${event.name} — ${event.theme}, ${event.dateLabel} at ${event.venue.short}.`,
 };
 
-/** The seat count has to be read fresh on every visit. */
+/** Seat count has to be read fresh each visit. */
 export const dynamic = "force-dynamic";
 
-/** Slim header. The full nav belongs to the landing page. */
+/** Slim header, no nav. */
 function PageHeader() {
   return (
     <header className="border-b border-line">
@@ -37,7 +37,7 @@ function PageHeader() {
   );
 }
 
-/** Shown instead of the form when nobody can sign up right now. */
+/** Replaces the form when sign-ups are shut. */
 function Notice({ title, body }: { title: string; body: string }) {
   return (
     <div className="rounded-2xl border border-line bg-ink-soft p-10 text-center sm:p-14">
@@ -62,7 +62,7 @@ export default async function RegisterPage() {
       <PageHeader />
 
       <main className="relative overflow-hidden px-5 py-16 sm:px-6 md:py-24">
-        {/* The same red wash the landing page uses under its register section. */}
+        {/* Same red wash as the landing page. */}
         <div
           aria-hidden
           className="absolute inset-x-0 top-0 h-[420px] bg-[radial-gradient(ellipse_at_50%_0%,rgba(235,0,40,0.18),transparent_65%)]"
@@ -82,7 +82,7 @@ export default async function RegisterPage() {
             a few details before we can hold a seat for you.
           </p>
 
-          {/* Live seat counter. Hidden if the database is unreachable. */}
+          {/* Hidden if there's no capacity set, or the database is down. */}
           {remaining !== null && remaining > 0 && (
             <p className="mt-7 inline-flex items-center gap-2.5 rounded-full border border-line bg-ink-soft px-5 py-2.5 text-sm font-semibold">
               <span aria-hidden className="h-2 w-2 rounded-full bg-ted" />

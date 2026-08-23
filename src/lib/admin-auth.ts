@@ -4,13 +4,9 @@ import { createHmac, timingSafeEqual } from "node:crypto";
 import { cookies } from "next/headers";
 
 /**
- * Password gate for /admin.
- *
- * There is one shared password, held in ADMIN_PASSWORD. Signing in stores a
- * cookie containing an HMAC derived from that password — knowing the cookie
- * value does not reveal the password, and the value cannot be forged without
- * it. Good enough for a table only the organizing team reads; if this ever
- * needs per-person accounts, swap it for Supabase Auth.
+ * Password gate for /admin. One shared password in ADMIN_PASSWORD; the session
+ * cookie holds an HMAC of it, so it can't be forged and doesn't leak the
+ * password. If we ever need per-person logins, use Supabase Auth instead.
  */
 
 export const COOKIE_NAME = "tedxmist_admin";
@@ -22,7 +18,7 @@ function tokenFor(password: string) {
   return createHmac("sha256", password).update("tedxmist-admin").digest("hex");
 }
 
-/** Constant-time compare, so the check cannot be timed character by character. */
+/** Constant-time compare, so the password can't be guessed by timing. */
 function matches(a: string, b: string) {
   const left = Buffer.from(a);
   const right = Buffer.from(b);

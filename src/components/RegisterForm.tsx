@@ -7,10 +7,7 @@ import { register } from "@/app/register/actions";
 import type { FormState } from "@/app/register/actions";
 import { event, registration } from "@/config/event";
 
-/* --------------------------------------------------------------------------
- * Shared input styling. Dark field, thin border, red ring on focus — the same
- * three colours the rest of the site uses.
- * ----------------------------------------------------------------------- */
+/* Shared input styling. */
 
 const inputClass =
   "w-full rounded-xl border bg-ink-soft px-4 py-3 text-[0.95rem] text-white transition outline-none placeholder:text-muted/60 focus:border-ted focus:ring-2 focus:ring-ted/30";
@@ -28,9 +25,9 @@ type FieldProps = {
   type?: string;
   placeholder?: string;
   optional?: boolean;
-  /** Renders a select instead of an input. */
+  /** Renders a dropdown instead of a text input. */
   options?: readonly string[];
-  /** Makes the field span both columns. */
+  /** Spans both columns. */
   wide?: boolean;
 };
 
@@ -100,9 +97,7 @@ function Legend({ children }: { children: React.ReactNode }) {
   );
 }
 
-/* --------------------------------------------------------------------------
- * The form
- * ----------------------------------------------------------------------- */
+/* The form. */
 
 const BLANK = {
   full_name: "",
@@ -118,8 +113,7 @@ const BLANK = {
   facebook: "",
 };
 
-// A "use server" file may only export async functions, so the initial state
-// for useActionState is declared here rather than beside the action.
+// Lives here because a "use server" file can only export async functions.
 const EMPTY_STATE: FormState = { ok: false, message: "", errors: {} };
 
 const YEARS = [
@@ -135,8 +129,8 @@ const YEARS = [
 export default function RegisterForm() {
   const [state, formAction, pending] = useActionState(register, EMPTY_STATE);
 
-  // Controlled inputs, so a validation error does not wipe what was typed —
-  // React resets an uncontrolled form as soon as its action finishes.
+  // Controlled, otherwise React clears the form after the action runs and
+  // a validation error wipes everything they typed.
   const [values, setValues] = useState(BLANK);
   const set = (key: keyof typeof BLANK) => (value: string) =>
     setValues((current) => ({ ...current, [key]: value }));
@@ -195,7 +189,7 @@ export default function RegisterForm() {
 
   return (
     <form action={formAction} noValidate className="space-y-12">
-      {/* A single top-level message, for errors that belong to no one field. */}
+      {/* Errors that don't belong to a single field. */}
       {state.message && (
         <p
           role="alert"

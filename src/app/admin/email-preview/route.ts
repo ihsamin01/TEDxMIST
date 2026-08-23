@@ -27,17 +27,15 @@ const SAMPLE: Registration = {
 };
 
 /**
- * GET /admin/email-preview — the confirmation email rendered in the browser.
- *
- * Lets you read and correct the wording before anyone receives it, and works
- * before the Resend domain is verified.
+ * GET /admin/email-preview — the confirmation email, in the browser. Handy for
+ * checking the wording before anyone gets it.
  */
 export async function GET() {
   if (!(await isSignedIn())) {
     return new Response("Unauthorized", { status: 401 });
   }
 
-  // Prefer a real row, so the preview shows real lengths of real names.
+  // Use a real row if there is one, so the lengths are realistic.
   let row = SAMPLE;
 
   try {
@@ -50,7 +48,7 @@ export async function GET() {
 
     if (data) row = { ...SAMPLE, ...(data as Registration) };
   } catch {
-    // Fall back to the sample; a preview is not worth failing over.
+    // Fall back to the sample. Not worth failing a preview over.
   }
 
   return new Response(confirmationEmailHtml(row), {

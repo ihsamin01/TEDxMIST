@@ -84,10 +84,8 @@ export const registration: {
   isOpen: true,
 
   /**
-   * How many people fit in the room. While this is null the site never
-   * mentions a number, no counter is shown, and sign-ups are not capped.
-   * Put the agreed figure here and the seats-left line and the automatic
-   * cut-off both come back on their own.
+   * How many people fit in the room. Null means no cap and no number shown
+   * anywhere. Put the agreed figure here to turn the limit back on.
    */
   capacity: null,
 

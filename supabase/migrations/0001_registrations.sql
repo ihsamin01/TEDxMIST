@@ -1,6 +1,5 @@
--- TEDxMIST attendee registrations.
--- One row per person who fills in the form at /register.
--- Run this once in the Supabase SQL editor (or via `supabase db push`).
+-- One row per person who signs up at /register.
+-- Run once in the Supabase SQL editor.
 
 create table if not exists public.registrations (
   id          uuid primary key default gen_random_uuid(),
@@ -15,8 +14,7 @@ create table if not exists public.registrations (
   study_year  text not null,
   student_id  text not null,
 
-  -- Payment. transaction_id is unique so the same receipt cannot be
-  -- submitted twice, which is the usual way people try to get a free seat.
+  -- transaction_id is unique, so one receipt can't buy two seats.
   payment_method text not null,
   transaction_id text not null,
   amount         numeric(10, 2),
@@ -26,13 +24,12 @@ create table if not exists public.registrations (
   linkedin          text,
   facebook          text,
 
-  -- Set from the admin table once the payment has been checked.
+  -- Set from /admin once the payment is checked.
   status text not null default 'pending'
          check (status in ('pending', 'confirmed', 'rejected'))
 );
 
--- Same receipt cannot be reused. Case-insensitive because people type
--- transaction ids in whatever case their SMS showed them.
+-- Case-insensitive, people copy transaction ids in whatever case.
 create unique index if not exists registrations_transaction_id_key
   on public.registrations (lower(transaction_id));
 
@@ -40,12 +37,10 @@ create unique index if not exists registrations_transaction_id_key
 create unique index if not exists registrations_email_key
   on public.registrations (lower(email));
 
--- The admin table is sorted newest first.
+-- /admin sorts newest first.
 create index if not exists registrations_created_at_idx
   on public.registrations (created_at desc);
 
--- Row level security with no policies at all: anon and authenticated clients
--- get nothing. Every read and write in this app goes through the server using
--- the project's secret key, which bypasses RLS. That key never reaches the
--- browser.
+-- RLS on with no policies, so anon and authenticated clients get nothing.
+-- All access goes through the server with the secret key, which bypasses RLS.
 alter table public.registrations enable row level security;
