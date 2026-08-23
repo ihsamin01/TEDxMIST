@@ -10,4 +10,4 @@ Built with Next.js and Tailwind.
 Open https://tedxmist.vercel.app/
 
 
-]
+
