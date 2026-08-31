@@ -86,8 +86,23 @@ export async function register(
 
   // The ID card arrives as a File rather than a string, so it is read on its
   // own rather than in the loop above.
-  const idCard = formData.get("id_card");
-  const hasIdCard = idCard instanceof File && idCard.size > 0;
+  //
+  // Checked by shape rather than with `instanceof File`: the class a runtime
+  // hands back here is not guaranteed to be the same one this module sees,
+  // and a false negative would silently reject a perfectly good upload.
+  const submitted = formData.get("id_card");
+  const idCard =
+    submitted !== null &&
+    typeof submitted === "object" &&
+    "size" in submitted &&
+    "type" in submitted &&
+    "arrayBuffer" in submitted
+      ? (submitted as File)
+      : null;
+
+  // A browser sends an empty part for a file input nobody touched, so "there
+  // is a File" and "they chose something" are different questions.
+  const hasIdCard = idCard !== null && idCard.size > 0;
 
   // 2. Validate.
   const errors: Record<string, string> = {};
@@ -189,7 +204,7 @@ export async function register(
 
   // 5. Put the ID card in the private bucket. Done after the capacity check
   //    so a full event never leaves orphaned images behind.
-  const file = idCard as File;
+  const file = idCard!;
   const extension = (file.name.split(".").pop() ?? "jpg")
     .toLowerCase()
     .replace(/[^a-z0-9]/g, "")

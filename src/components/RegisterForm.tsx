@@ -396,6 +396,27 @@ export default function RegisterForm() {
     }
   };
 
+  /**
+   * React resets a form's uncontrolled fields once its action finishes. Every
+   * text field here is controlled so it survives that, but a file input
+   * cannot be controlled — the browser owns its value — so it comes back
+   * empty while the preview, which lives in React state, still shows the
+   * picture. A second submit then sends no file at all.
+   *
+   * So the file is taken from state rather than from the input, and the
+   * FormData is built here instead of by the browser.
+   */
+  const onSubmit = (formEvent: React.FormEvent<HTMLFormElement>) => {
+    formEvent.preventDefault();
+
+    const data = new FormData(formEvent.currentTarget);
+
+    if (idCard) data.set("id_card", idCard, idCard.name);
+    else data.delete("id_card");
+
+    formAction(data);
+  };
+
   const backToDetails = () => {
     setStep(1);
     window.scrollTo({ top: 0, behavior: "smooth" });
@@ -452,7 +473,7 @@ export default function RegisterForm() {
   }
 
   return (
-    <form action={formAction} noValidate className="space-y-12">
+    <form onSubmit={onSubmit} noValidate className="space-y-12">
       <Steps step={step} />
 
       {/* Errors that don't belong to a single field. */}
