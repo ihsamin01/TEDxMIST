@@ -89,7 +89,8 @@ export function confirmationEmailHtml(reg: Registration) {
           <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="margin-top:10px;">
             ${row("Date", esc(event.dateLabel))}
             ${row("Time", esc(event.timeLabel))}
-            ${row("Venue", esc(event.venue.name))}
+            ${row("Venue", esc(event.venue.hall))}
+            ${row("Campus", esc(event.venue.name))}
             ${row("Address", esc(event.venue.address))}
             ${row("Map", `<a href="${esc(event.venue.mapUrl)}" style="color:${RED};">Open in Google Maps</a>`)}
           </table>
@@ -104,6 +105,7 @@ export function confirmationEmailHtml(reg: Registration) {
             ${row("Department", esc(reg.department))}
             ${row("Year", esc(reg.study_year))}
             ${row("Transaction ID", esc(reg.transaction_id))}
+            ${row("T-shirt", esc(reg.tshirt_size ?? "—"))}
           </table>
           <p style="margin:14px 0 0;color:#888;font-size:12px;line-height:1.6;">
             Something wrong above? Reply to this email and we will fix it.
@@ -155,7 +157,8 @@ function text(reg: Registration) {
     "EVENT DETAILS",
     `Date:    ${event.dateLabel}`,
     `Time:    ${event.timeLabel}`,
-    `Venue:   ${event.venue.name}`,
+    `Venue:   ${event.venue.hall}`,
+    `Campus:  ${event.venue.name}`,
     `Address: ${event.venue.address}`,
     `Map:     ${event.venue.mapUrl}`,
     "",
@@ -165,6 +168,7 @@ function text(reg: Registration) {
     `Department:     ${reg.department}`,
     `Year:           ${reg.study_year}`,
     `Transaction ID: ${reg.transaction_id}`,
+    `T-shirt:        ${reg.tshirt_size ?? "-"}`,
     "",
     "ON THE DAY",
     "- Bring your student ID card along with this ticket number.",

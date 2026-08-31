@@ -1,8 +1,17 @@
 "use server";
 
-import { event, registration } from "@/config/event";
+import { event, feeFor, registration } from "@/config/event";
 import { OTHER_UNIVERSITY, universities } from "@/config/universities";
 import { supabase } from "@/lib/supabase";
+import {
+  EMAIL_MESSAGE,
+  FACEBOOK_MESSAGE,
+  PHONE_MESSAGE,
+  emailOk,
+  facebookOk,
+  phoneOk,
+  withScheme,
+} from "@/lib/validation";
 
 export type FormState = {
   ok: boolean;
@@ -23,6 +32,7 @@ const FIELDS = [
   "student_id",
   "payment_method",
   "transaction_id",
+  "tshirt_size",
   "emergency_contact",
   "facebook",
 ] as const;
@@ -44,23 +54,10 @@ const LABELS: Record<string, string> = {
   student_id: "Student ID",
   payment_method: "Payment method",
   transaction_id: "Transaction ID",
+  tshirt_size: "T-shirt size",
   emergency_contact: "Emergency contact",
   facebook: "Facebook profile",
 };
-
-/**
- * Bangladeshi mobile numbers: 01, an operator digit, then eight more — eleven
- * digits in total. An optional +88 or 88 country code is allowed in front.
- */
-const PHONE = /^(\+?88)?01[3-9]\d{8}$/;
-const EMAIL = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
-
-/**
- * A link to an actual Facebook profile, not just the word "facebook". The
- * trailing path is required, so facebook.com on its own is rejected.
- */
-const FACEBOOK =
-  /^https?:\/\/(www\.|m\.|web\.|mbasic\.)?(facebook\.com|fb\.com|fb\.me)\/[^/?#\s][^\s]*$/i;
 
 export async function register(
   _prev: FormState,
@@ -79,9 +76,7 @@ export async function register(
   // People type "facebook.com/x" as often as the full URL, so add the scheme
   // before validating rather than after. It also keeps the link in the admin
   // table absolute.
-  if (values.facebook && !/^https?:\/\//i.test(values.facebook)) {
-    values.facebook = `https://${values.facebook}`;
-  }
+  values.facebook = withScheme(values.facebook);
 
   // 2. Validate.
   const errors: Record<string, string> = {};
@@ -92,21 +87,16 @@ export async function register(
     }
   }
 
-  if (values.email && !EMAIL.test(values.email)) {
-    errors.email = "That does not look like a valid email address.";
+  if (values.email && !emailOk(values.email)) {
+    errors.email = EMAIL_MESSAGE;
   }
 
-  if (values.phone && !PHONE.test(values.phone.replace(/[\s-]/g, ""))) {
-    errors.phone =
-      "Enter an 11-digit Bangladeshi mobile number, for example 01712345678.";
+  if (values.phone && !phoneOk(values.phone)) {
+    errors.phone = PHONE_MESSAGE;
   }
 
-  if (
-    values.emergency_contact &&
-    !PHONE.test(values.emergency_contact.replace(/[\s-]/g, ""))
-  ) {
-    errors.emergency_contact =
-      "Enter an 11-digit Bangladeshi mobile number, for example 01712345678.";
+  if (values.emergency_contact && !phoneOk(values.emergency_contact)) {
+    errors.emergency_contact = PHONE_MESSAGE;
   }
 
   // The dropdown is a hidden input, so never trust what comes back: it has to
@@ -127,9 +117,15 @@ export async function register(
     errors.payment_method = "Pick one of the listed payment methods.";
   }
 
-  if (values.facebook && !FACEBOOK.test(values.facebook)) {
-    errors.facebook =
-      "Paste the link to your Facebook profile, for example https://facebook.com/yourname.";
+  if (values.facebook && !facebookOk(values.facebook)) {
+    errors.facebook = FACEBOOK_MESSAGE;
+  }
+
+  if (
+    values.tshirt_size &&
+    !registration.tshirtSizes.includes(values.tshirt_size)
+  ) {
+    errors.tshirt_size = "Pick one of the listed T-shirt sizes.";
   }
 
   if (values.transaction_id && values.transaction_id.length < 6) {
@@ -183,7 +179,10 @@ export async function register(
     student_id: values.student_id,
     payment_method: values.payment_method,
     transaction_id: values.transaction_id,
-    amount: registration.fee || null,
+    tshirt_size: values.tshirt_size,
+    // Worked out from the university on the server. The payment step shows
+    // the same figure, but what gets stored never depends on that.
+    amount: feeFor(values.university),
     emergency_contact: values.emergency_contact,
     facebook: values.facebook,
   });

@@ -18,6 +18,7 @@ const SAMPLE: Registration = {
   student_id: "202211045",
   payment_method: "bKash",
   transaction_id: "9F7K2LM4XQ",
+  tshirt_size: "L",
   amount: 500,
   emergency_contact: "01812345678",
   facebook: null,

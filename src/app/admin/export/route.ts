@@ -17,6 +17,7 @@ const COLUMNS: Array<[keyof Registration, string]> = [
   ["student_id", "Student ID"],
   ["payment_method", "Payment method"],
   ["transaction_id", "Transaction ID"],
+  ["tshirt_size", "T-shirt"],
   ["amount", "Amount"],
   ["emergency_contact", "Emergency contact"],
   ["facebook", "Facebook"],

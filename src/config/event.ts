@@ -27,7 +27,14 @@ export const event: {
   startsAt: string;
   dateLabel: string;
   timeLabel: string;
-  venue: { name: string; short: string; address: string; mapUrl: string };
+  venue: {
+    name: string;
+    hall: string;
+    short: string;
+    address: string;
+    mapUrl: string;
+    mapEmbedUrl: string;
+  };
   organizer: { name: string; role: string; affiliation: string };
   contact: { email: string; phone: string };
 } = {
@@ -48,10 +55,15 @@ export const event: {
 
   venue: {
     name: "Military Institute of Science and Technology (MIST)",
+    /** The room itself, shown on the registration page and in the email. */
+    hall: "Shaheed Yamin Auditorium",
     short: "MIST, Dhaka",
     address: "Mirpur Cantonment, Dhaka, Bangladesh",
-    /** Used by the "View on map" link in the footer. */
+    /** Used by the "View on map" links. */
     mapUrl: "https://maps.google.com/?q=Military+Institute+of+Science+and+Technology+Dhaka",
+    /** The same place, as an <iframe> the registration page embeds. */
+    mapEmbedUrl:
+      "https://www.google.com/maps?q=Military+Institute+of+Science+and+Technology,+Mirpur+Cantonment,+Dhaka&output=embed",
   },
 
   organizer: {
@@ -74,10 +86,13 @@ export const event: {
 export const registration: {
   isOpen: boolean;
   capacity: number | null;
-  fee: number;
+  fees: { mist: number; other: number };
+  mistUniversity: string;
   currency: string;
   paymentMethods: string[];
   paymentNumber: string;
+  tshirtSizes: string[];
+  guidelines: string[];
   note: string;
 } = {
   /** Set to false the moment you stop taking sign-ups. */
@@ -89,24 +104,60 @@ export const registration: {
    */
   capacity: null,
 
-  /** Registration fee per seat. Set to 0 for a free event. */
-  fee: 500,
+  /**
+   * What a seat costs. MIST students pay the lower rate; everyone else pays
+   * the other one. Which rate applies is worked out on the server from the
+   * university they picked, never from anything the browser sends.
+   */
+  fees: {
+    mist: 150,
+    other: 400,
+  },
 
-  /** Printed in front of the fee. */
+  /**
+   * The university that qualifies for the MIST rate. This has to match the
+   * entry in config/universities.ts character for character.
+   */
+  mistUniversity: "Military Institute of Science and Technology (MIST)",
+
+  /** Printed in front of every amount. */
   currency: "BDT",
 
   /** The options in the "how did you pay" dropdown on the form. */
   paymentMethods: ["bKash", "Nagad", "Rocket", "Bank transfer"],
 
   /**
-   * The number attendees send the fee to, shown on the registration page.
+   * The number attendees send the fee to, shown on the payment step.
    * Leave it as "" and the payment instructions box is hidden.
    */
-  paymentNumber: "",
+  paymentNumber: "01827724421",
+
+  /** The options in the T-shirt dropdown. */
+  tshirtSizes: ["S", "M", "L", "XL", "XXL"],
+
+  /** Shown as a checklist on the payment step and repeated in the email. */
+  guidelines: [
+    "Be at the venue at least 30 minutes before the programme starts.",
+    "Bring your student ID and the phone number you registered with.",
+    "Your seat is confirmed only after we verify your transaction ID.",
+    "Seats are not transferable and the fee is non-refundable.",
+  ],
 
   /** Small line printed under the button. */
   note: "In-person seats are limited and allocated first come, first served.",
 };
+
+/**
+ * What this person owes, from the university they picked.
+ *
+ * Both the payment step and the server call this, so the amount shown on
+ * screen and the amount stored on the row can never disagree.
+ */
+export function feeFor(university: string): number {
+  return university === registration.mistUniversity
+    ? registration.fees.mist
+    : registration.fees.other;
+}
 
 /* ---------------------------------------------------------------------------
  * 3. ABOUT COPY

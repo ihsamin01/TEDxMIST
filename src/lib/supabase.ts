@@ -38,6 +38,8 @@ export type Registration = {
   student_id: string;
   payment_method: string;
   transaction_id: string;
+  /** Null on rows created before the column existed. */
+  tshirt_size: string | null;
   amount: number | null;
   emergency_contact: string;
   facebook: string | null;

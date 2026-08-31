@@ -267,6 +267,8 @@ export default async function AdminPage({
               <Th>Student ID</Th>
               <Th>Method</Th>
               <Th>Transaction ID</Th>
+              <Th>T-shirt</Th>
+              <Th>Paid</Th>
               <Th>Emergency</Th>
               <Th>Facebook</Th>
               <Th>Registered</Th>
@@ -303,6 +305,10 @@ export default async function AdminPage({
                   <code className="text-xs tracking-wide">
                     {row.transaction_id}
                   </code>
+                </Td>
+                <Td>{row.tshirt_size ?? "—"}</Td>
+                <Td muted>
+                  {row.amount === null ? "—" : `${registration.currency} ${row.amount}`}
                 </Td>
                 <Td>{row.emergency_contact}</Td>
                 <Td>
