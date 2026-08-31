@@ -403,14 +403,13 @@ export default function RegisterForm() {
    * empty while the preview, which lives in React state, still shows the
    * picture. A second submit then sends no file at all.
    *
-   * So the file is taken from state rather than from the input, and the
-   * FormData is built here instead of by the browser.
+   * So React still owns the submit and builds the FormData, exactly as it
+   * did before, and this only swaps in the file from state on the way past.
+   * Calling the action ourselves out of an onSubmit handler does not work:
+   * a useActionState dispatch outside React's own form action path never
+   * runs, and the button appears to do nothing at all.
    */
-  const onSubmit = (formEvent: React.FormEvent<HTMLFormElement>) => {
-    formEvent.preventDefault();
-
-    const data = new FormData(formEvent.currentTarget);
-
+  const submit = (data: FormData) => {
     if (idCard) data.set("id_card", idCard, idCard.name);
     else data.delete("id_card");
 
@@ -473,7 +472,7 @@ export default function RegisterForm() {
   }
 
   return (
-    <form onSubmit={onSubmit} noValidate className="space-y-12">
+    <form action={submit} noValidate className="space-y-12">
       <Steps step={step} />
 
       {/* Errors that don't belong to a single field. */}
