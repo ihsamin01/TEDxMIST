@@ -20,7 +20,7 @@ const from = `${event.name} <${user}>`;
 
 /** Ticket number, shown at the gate. */
 export function ticketCode(ticketNo: number | null) {
-  if (!ticketNo) return "—";
+  if (!ticketNo) return "-";
   return `TEDXMIST-${String(ticketNo).padStart(3, "0")}`;
 }
 
@@ -105,7 +105,7 @@ export function confirmationEmailHtml(reg: Registration) {
             ${row("Department", esc(reg.department))}
             ${row("Year", esc(reg.study_year))}
             ${row("Transaction ID", esc(reg.transaction_id))}
-            ${row("T-shirt", esc(reg.tshirt_size ?? "—"))}
+            ${row("T-shirt", esc(reg.tshirt_size ?? "-"))}
           </table>
           <p style="margin:14px 0 0;color:#888;font-size:12px;line-height:1.6;">
             Something wrong above? Reply to this email and we will fix it.
@@ -117,7 +117,7 @@ export function confirmationEmailHtml(reg: Registration) {
           <div style="color:${RED};font-size:11px;letter-spacing:2px;text-transform:uppercase;font-weight:700;border-bottom:1px solid #e5e5e5;padding-bottom:8px;">On the day</div>
           <ul style="margin:12px 0 0;padding-left:18px;color:#444;font-size:14px;line-height:1.9;">
             <li>Bring your <strong>student ID card</strong> along with this ticket number.</li>
-            <li>Arrive by <strong>09:30</strong> — the desk closes when the first talk starts.</li>
+            <li>Arrive by <strong>09:30</strong>. The desk closes when the first talk starts.</li>
             <li>Seats are not numbered, so earlier arrival means a better view.</li>
             <li>Can't make it? Email us so we can give your seat to someone on the waiting list.</li>
           </ul>
@@ -145,7 +145,7 @@ export function confirmationEmailHtml(reg: Registration) {
 /** Plain-text fallback. Also helps with spam filters. */
 function text(reg: Registration) {
   return [
-    `${event.name} — ${event.theme}`,
+    `${event.name}: ${event.theme}`,
     "",
     "YOUR SEAT IS CONFIRMED",
     "",
@@ -209,7 +209,7 @@ export async function sendConfirmationEmail(
     await transport.sendMail({
       from,
       to: reg.email,
-      subject: `${event.name} registration confirmed — ticket ${ticketCode(reg.ticket_no)}`,
+      subject: `${event.name} registration confirmed, ticket ${ticketCode(reg.ticket_no)}`,
       html: confirmationEmailHtml(reg),
       text: text(reg),
       replyTo: event.contact.email || user,

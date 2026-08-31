@@ -130,7 +130,7 @@ export default function IdCardField({ error, disabled, onPick }: Props) {
               <p className="truncate text-sm font-semibold">{file.name}</p>
               <p className={`text-xs ${tooBig ? "text-ted" : "text-muted"}`}>
                 {(file.size / 1024 / 1024).toFixed(1)} MB
-                {tooBig && " — over the 5 MB limit"}
+                {tooBig && " (over the 5 MB limit)"}
               </p>
             </div>
 

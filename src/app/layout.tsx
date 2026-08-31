@@ -9,11 +9,11 @@ const inter = Inter({
   display: "swap",
 });
 
-const description = `${event.theme} — an independently organized TEDx event at ${event.venue.short} on ${event.dateLabel}. ${about.ourEvent.slice(0, 110)}...`;
+const description = `${event.theme}. An independently organized TEDx event at ${event.venue.short} on ${event.dateLabel}. ${about.ourEvent.slice(0, 110)}...`;
 
 export const metadata: Metadata = {
   title: {
-    default: `${event.name} — ${event.theme}`,
+    default: `${event.name}: ${event.theme}`,
     template: `%s | ${event.name}`,
   },
   description,
@@ -27,7 +27,7 @@ export const metadata: Metadata = {
     event.theme,
   ],
   openGraph: {
-    title: `${event.name} — ${event.theme}`,
+    title: `${event.name}: ${event.theme}`,
     description,
     type: "website",
     locale: "en_US",
@@ -35,7 +35,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: `${event.name} — ${event.theme}`,
+    title: `${event.name}: ${event.theme}`,
     description,
   },
 };

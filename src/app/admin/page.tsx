@@ -310,7 +310,7 @@ export default async function AdminPage({
                       View
                     </a>
                   ) : (
-                    (row.student_id ?? "—")
+                    (row.student_id ?? "-")
                   )}
                 </Td>
                 <Td>{row.payment_method}</Td>
@@ -319,9 +319,9 @@ export default async function AdminPage({
                     {row.transaction_id}
                   </code>
                 </Td>
-                <Td>{row.tshirt_size ?? "—"}</Td>
+                <Td>{row.tshirt_size ?? "-"}</Td>
                 <Td muted>
-                  {row.amount === null ? "—" : `${registration.currency} ${row.amount}`}
+                  {row.amount === null ? "-" : `${registration.currency} ${row.amount}`}
                 </Td>
                 <Td>{row.emergency_contact}</Td>
                 <Td>

@@ -14,7 +14,7 @@ export default function LoginForm() {
       </p>
 
       <h1 className="mb-8 text-sm font-semibold text-muted">
-        Registrations — organizers only
+        Registrations, organizers only
       </h1>
 
       <label

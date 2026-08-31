@@ -6,7 +6,7 @@ export default function About() {
   return (
     <Section
       id="about"
-      eyebrow="01 — About"
+      eyebrow="01 / About"
       title={`About ${event.name}`}
       intro="An independently organized TEDx event, hosted on the MIST campus in Mirpur Cantonment."
     >

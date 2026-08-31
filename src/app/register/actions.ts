@@ -116,7 +116,7 @@ export async function register(
   if (!hasIdCard) {
     errors.id_card = "Attach a photo of your student ID card.";
   } else if (!ID_CARD_TYPES.includes(idCard.type)) {
-    errors.id_card = "Upload an image — JPG, PNG or WebP.";
+    errors.id_card = "Upload an image file: JPG, PNG or WebP.";
   } else if (idCard.size > MAX_ID_CARD_BYTES) {
     errors.id_card = "That image is over 5 MB. Try a smaller photo.";
   }

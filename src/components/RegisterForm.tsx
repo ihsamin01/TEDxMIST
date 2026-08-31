@@ -263,7 +263,7 @@ function PaymentCard({ university }: { university: string }) {
           </p>
 
           <p className="mt-2 text-xs text-muted">
-            Personal number — use Send Money, not Payment.
+            It is a personal number, so use Send Money, not Payment.
           </p>
         </div>
       )}
@@ -688,9 +688,9 @@ export default function RegisterForm() {
         </div>
 
         <p className="text-xs leading-relaxed text-muted">
-          We only use these details to run the event — badges, seating and
-          getting in touch if plans change. Nothing is shared outside the
-          organizing team.
+          We only use these details to run the event: badges, seating, and
+          getting in touch if plans change. Nothing goes outside the organizing
+          team.
         </p>
       </div>
     </form>

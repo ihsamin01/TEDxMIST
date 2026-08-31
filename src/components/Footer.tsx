@@ -69,7 +69,7 @@ export default function Footer() {
         </p>
 
         <p className="mx-auto mt-4 max-w-md leading-relaxed text-balance text-muted">
-          {event.theme} — {event.dateLabel} at {event.venue.short}.
+          {event.theme}. {event.dateLabel} at {event.venue.short}.
         </p>
 
         <div className="mt-8">

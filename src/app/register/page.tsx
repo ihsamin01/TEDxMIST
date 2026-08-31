@@ -7,7 +7,7 @@ import { seatsLeft } from "./actions";
 
 export const metadata: Metadata = {
   title: "Register",
-  description: `Reserve your seat at ${event.name} — ${event.theme}, ${event.dateLabel} at ${event.venue.short}.`,
+  description: `Reserve your seat at ${event.name}. ${event.theme}, ${event.dateLabel} at ${event.venue.short}.`,
 };
 
 /** Seat count has to be read fresh each visit. */
@@ -78,8 +78,8 @@ export default async function RegisterPage() {
           </h1>
 
           <p className="mt-6 max-w-xl text-base leading-relaxed text-pretty text-white/70 sm:text-lg">
-            {event.theme} — {event.dateLabel} at {event.venue.short}. We need
-            a few details before we can hold a seat for you.
+            {event.theme}, on {event.dateLabel} at {event.venue.short}. A few
+            details and we can hold a seat for you.
           </p>
 
           {/* Hidden if there's no capacity set, or the database is down. */}

@@ -51,7 +51,7 @@ export const event: {
 
   /** Shown as plain text in the hero and the schedule heading. */
   dateLabel: "19 November 2026",
-  timeLabel: "10:00 AM — 5:00 PM",
+  timeLabel: "10:00 AM - 5:00 PM",
 
   venue: {
     name: "Military Institute of Science and Technology (MIST)",
@@ -172,10 +172,10 @@ export const about = {
   headline: "The first TEDx event ever held at MIST.",
 
   /** The paragraph under it. */
-  ourEvent: `TEDxMIST brings TEDx to the Military Institute of Science and Technology for the very first time. Organized independently by students, it gathers engineers, researchers, artists, founders and storytellers from across Bangladesh onto one stage in Mirpur Cantonment — for a single day of talks, and a room small enough to argue with them afterwards.`,
+  ourEvent: `TEDxMIST brings TEDx to the Military Institute of Science and Technology for the first time, and students are running the whole thing themselves. For one day we are putting engineers, researchers, artists, founders and storytellers from across Bangladesh on one stage in Mirpur Cantonment, in a room small enough that you can go and argue with them afterwards.`,
 
   /** What the theme means. Shown in its own highlighted block. */
-  themeMeaning: `An echo is something you set in motion and then live inside. Every decision made today — a line of code, a policy, a design, a choice to speak up or stay quiet — travels outward and returns to a generation that had no say in making it. "Echoes of Tomorrow" asks our speakers a deliberately uncomfortable question: what exactly are you sending forward, and who will have to hear it?`,
+  themeMeaning: `An echo is something you start and then have to live inside. Nothing we decide today stays where we left it. A line of code, a policy, a design, a choice to speak up or keep quiet: all of it travels outward and lands on people who never got a say in it. So we put an awkward question to our speakers. What are you sending forward, and who has to hear it?`,
 } as const;
 
 /* ---------------------------------------------------------------------------
@@ -268,7 +268,7 @@ export const schedule: Slot[] = [
   },
   {
     time: "10:20",
-    title: "Session One — Foundations",
+    title: "Session One: Foundations",
     detail: "Three talks, followed by a short TED Talk screening.",
     highlight: true,
   },
@@ -279,7 +279,7 @@ export const schedule: Slot[] = [
   },
   {
     time: "13:30",
-    title: "Session Two — Signals",
+    title: "Session Two: Signals",
     detail: "Three talks exploring what today is already sending forward.",
     highlight: true,
   },
@@ -290,7 +290,7 @@ export const schedule: Slot[] = [
   },
   {
     time: "15:45",
-    title: "Session Three — Echoes",
+    title: "Session Three: Echoes",
     detail: "Closing talks and an on-stage conversation with the speakers.",
     highlight: true,
   },

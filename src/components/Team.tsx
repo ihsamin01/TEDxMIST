@@ -7,7 +7,7 @@ export default function Team() {
   return (
     <Section
       id="team"
-      eyebrow="04 — Team"
+      eyebrow="04 / Team"
       title="The organizing team"
       intro={`${event.name} is put together by students of ${event.venue.name}, under licence from TED.`}
     >

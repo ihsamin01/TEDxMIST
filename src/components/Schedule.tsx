@@ -6,7 +6,7 @@ export default function Schedule() {
   return (
     <Section
       id="schedule"
-      eyebrow="03 — Schedule"
+      eyebrow="03 / Schedule"
       title="How the day runs"
       intro={`A provisional running order for ${event.dateLabel}. Exact times will be confirmed nearer the event.`}
     >

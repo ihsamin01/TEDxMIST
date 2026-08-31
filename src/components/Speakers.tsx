@@ -14,7 +14,7 @@ export default function Speakers() {
     <>
       <Section
         id="speakers"
-        eyebrow="02 — Speakers"
+        eyebrow="02 / Speakers"
         title="The people on stage"
         intro="Engineers, researchers, artists and founders, each given the same brief: tell us what you are sending forward."
       >
