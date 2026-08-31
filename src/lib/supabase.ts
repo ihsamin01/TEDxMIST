@@ -35,7 +35,10 @@ export type Registration = {
   university: string;
   department: string;
   study_year: string;
-  student_id: string;
+  /** Older rows have a typed number; newer ones have an uploaded card. */
+  student_id: string | null;
+  /** Path inside the private id-cards bucket. Null on older rows. */
+  id_card_path: string | null;
   payment_method: string;
   transaction_id: string;
   /** Null on rows created before the column existed. */

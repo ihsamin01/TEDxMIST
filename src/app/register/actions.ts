@@ -29,7 +29,6 @@ const FIELDS = [
   "university_other",
   "department",
   "study_year",
-  "student_id",
   "payment_method",
   "transaction_id",
   "tshirt_size",
@@ -51,13 +50,20 @@ const LABELS: Record<string, string> = {
   university_other: "Your university",
   department: "Department",
   study_year: "Year or semester",
-  student_id: "Student ID",
   payment_method: "Payment method",
   transaction_id: "Transaction ID",
   tshirt_size: "T-shirt size",
   emergency_contact: "Emergency contact",
   facebook: "Facebook profile",
 };
+
+/** Anything bigger than this is a photo nobody needed to take at that size. */
+const MAX_ID_CARD_BYTES = 5 * 1024 * 1024;
+
+const ID_CARD_TYPES = ["image/jpeg", "image/png", "image/webp", "image/heic"];
+
+/** The private bucket the images go in. Created by migration 0005. */
+const ID_CARD_BUCKET = "id-cards";
 
 export async function register(
   _prev: FormState,
@@ -78,6 +84,11 @@ export async function register(
   // table absolute.
   values.facebook = withScheme(values.facebook);
 
+  // The ID card arrives as a File rather than a string, so it is read on its
+  // own rather than in the loop above.
+  const idCard = formData.get("id_card");
+  const hasIdCard = idCard instanceof File && idCard.size > 0;
+
   // 2. Validate.
   const errors: Record<string, string> = {};
 
@@ -85,6 +96,14 @@ export async function register(
     if (!OPTIONAL.has(field) && !values[field]) {
       errors[field] = `${LABELS[field]} is required.`;
     }
+  }
+
+  if (!hasIdCard) {
+    errors.id_card = "Attach a photo of your student ID card.";
+  } else if (!ID_CARD_TYPES.includes(idCard.type)) {
+    errors.id_card = "Upload an image — JPG, PNG or WebP.";
+  } else if (idCard.size > MAX_ID_CARD_BYTES) {
+    errors.id_card = "That image is over 5 MB. Try a smaller photo.";
   }
 
   if (values.email && !emailOk(values.email)) {
@@ -168,7 +187,32 @@ export async function register(
     }
   }
 
-  // 5. Save.
+  // 5. Put the ID card in the private bucket. Done after the capacity check
+  //    so a full event never leaves orphaned images behind.
+  const file = idCard as File;
+  const extension = (file.name.split(".").pop() ?? "jpg")
+    .toLowerCase()
+    .replace(/[^a-z0-9]/g, "")
+    .slice(0, 5);
+  const idCardPath = `${crypto.randomUUID()}.${extension || "jpg"}`;
+
+  const { error: uploadError } = await db.storage
+    .from(ID_CARD_BUCKET)
+    .upload(idCardPath, await file.arrayBuffer(), {
+      contentType: file.type,
+      upsert: false,
+    });
+
+  if (uploadError) {
+    return {
+      ok: false,
+      message:
+        "Your ID card could not be uploaded. Check your connection and try again.",
+      errors: {},
+    };
+  }
+
+  // 6. Save.
   const { error } = await db.from("registrations").insert({
     full_name: values.full_name,
     email: values.email.toLowerCase(),
@@ -180,6 +224,7 @@ export async function register(
     payment_method: values.payment_method,
     transaction_id: values.transaction_id,
     tshirt_size: values.tshirt_size,
+    id_card_path: idCardPath,
     // Worked out from the university on the server. The payment step shows
     // the same figure, but what gets stored never depends on that.
     amount: feeFor(values.university),
@@ -188,6 +233,9 @@ export async function register(
   });
 
   if (error) {
+    // The row never happened, so neither should the upload.
+    await db.storage.from(ID_CARD_BUCKET).remove([idCardPath]);
+
     // 23505 is a unique violation. The index name says which field.
     if (error.code === "23505") {
       const onEmail = `${error.message} ${error.details ?? ""}`.includes(

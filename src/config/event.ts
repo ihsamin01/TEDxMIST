@@ -164,11 +164,11 @@ export function feeFor(university: string): number {
  * ------------------------------------------------------------------------ */
 
 export const about = {
-  /** Required TED wording explaining what a TEDx event actually is. */
-  whatIsTedx: `In the spirit of ideas worth spreading, TEDx is a program of local, self-organized events that bring people together to share a TED-like experience. At a TEDx event, TED Talks video and live speakers combine to spark deep discussion and connection. These local, self-organized events are branded TEDx, where x = independently organized TED event.`,
+  /** The one line the About section leads with. Keep it short and flat. */
+  headline: "The first TEDx event ever held at MIST.",
 
-  /** Your own paragraph about this specific event. */
-  ourEvent: `TEDxMIST brings that format to Mirpur Cantonment for the first time. Organized independently by students of the Military Institute of Science and Technology, it gathers engineers, researchers, artists, founders and storytellers from across Bangladesh onto one stage for a single day of talks — and puts an audience of a hundred people in the room to argue with them afterwards.`,
+  /** The paragraph under it. */
+  ourEvent: `TEDxMIST brings TEDx to the Military Institute of Science and Technology for the very first time. Organized independently by students, it gathers engineers, researchers, artists, founders and storytellers from across Bangladesh onto one stage in Mirpur Cantonment — for a single day of talks, and a room small enough to argue with them afterwards.`,
 
   /** What the theme means. Shown in its own highlighted block. */
   themeMeaning: `An echo is something you set in motion and then live inside. Every decision made today — a line of code, a policy, a design, a choice to speak up or stay quiet — travels outward and returns to a generation that had no say in making it. "Echoes of Tomorrow" asks our speakers a deliberately uncomfortable question: what exactly are you sending forward, and who will have to hear it?`,

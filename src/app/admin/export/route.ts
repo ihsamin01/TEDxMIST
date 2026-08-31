@@ -15,6 +15,7 @@ const COLUMNS: Array<[keyof Registration, string]> = [
   ["department", "Department"],
   ["study_year", "Year"],
   ["student_id", "Student ID"],
+  ["id_card_path", "ID card file"],
   ["payment_method", "Payment method"],
   ["transaction_id", "Transaction ID"],
   ["tshirt_size", "T-shirt"],

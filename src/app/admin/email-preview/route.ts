@@ -19,6 +19,7 @@ const SAMPLE: Registration = {
   payment_method: "bKash",
   transaction_id: "9F7K2LM4XQ",
   tshirt_size: "L",
+  id_card_path: null,
   amount: 500,
   emergency_contact: "01812345678",
   facebook: null,

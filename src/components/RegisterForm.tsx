@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useActionState, useState } from "react";
+import IdCardField from "./IdCardField";
 import Select from "./Select";
 import { register } from "@/app/register/actions";
 import type { FormState } from "@/app/register/actions";
@@ -111,7 +112,6 @@ const BLANK = {
   university_other: "",
   department: "",
   study_year: "",
-  student_id: "",
   payment_method: "",
   transaction_id: "",
   tshirt_size: "",
@@ -130,7 +130,6 @@ const STEP_ONE: FieldName[] = [
   "university_other",
   "department",
   "study_year",
-  "student_id",
 ];
 
 // Lives here because a "use server" file can only export async functions.
@@ -208,7 +207,6 @@ function VenueCard() {
 
 function PaymentCard({ university }: { university: string }) {
   const fee = feeFor(university);
-  const isMist = university === registration.mistUniversity;
 
   return (
     <div className="rounded-2xl border border-ted/40 bg-ted/5 p-6 sm:col-span-2 sm:p-7">
@@ -218,12 +216,6 @@ function PaymentCard({ university }: { university: string }) {
 
       <p className="mt-3 text-3xl font-black tracking-tight sm:text-4xl">
         {registration.currency} {fee}
-      </p>
-
-      <p className="mt-2 text-sm leading-relaxed text-white/70">
-        {isMist
-          ? "The MIST student rate, worked out from the university you chose."
-          : `The rate for students from outside MIST. MIST students pay ${registration.currency} ${registration.fees.mist}.`}
       </p>
 
       {registration.paymentNumber && (
@@ -321,6 +313,8 @@ export default function RegisterForm() {
   const [step, setStep] = useState<1 | 2>(1);
   /** The first screen is checked here before anyone is let through. */
   const [localErrors, setLocalErrors] = useState<Record<string, string>>({});
+  /** The file input owns the file itself; this is only whether one exists. */
+  const [idCard, setIdCard] = useState<File | null>(null);
 
   const set = (key: FieldName) => (value: string) => {
     setValues((current) => ({ ...current, [key]: value }));
@@ -337,7 +331,9 @@ export default function RegisterForm() {
   const error = (key: FieldName) => state.errors[key] ?? localErrors[key];
 
   /** Did the server reject something that lives on the first screen? */
-  const serverHitStepOne = STEP_ONE.some((field) => state.errors[field]);
+  const serverHitStepOne =
+    STEP_ONE.some((field) => state.errors[field]) ||
+    Boolean(state.errors.id_card);
 
   const goToPayment = () => {
     const found: Record<string, string> = {};
@@ -352,6 +348,8 @@ export default function RegisterForm() {
       }
       if (!values[field]) found[field] = "This one is needed.";
     }
+
+    if (!idCard) found.id_card = "Attach a photo of your student ID card.";
 
     if (values.email && !emailOk(values.email)) found.email = EMAIL_MESSAGE;
     if (values.phone && !phoneOk(values.phone)) found.phone = PHONE_MESSAGE;
@@ -520,12 +518,10 @@ export default function RegisterForm() {
             onChange={set("study_year")}
             error={error("study_year")}
           />
-          <Field
-            name="student_id"
-            label="Student ID"
-            value={values.student_id}
-            onChange={set("student_id")}
-            error={error("student_id")}
+          <IdCardField
+            error={state.errors.id_card ?? localErrors.id_card}
+            disabled={pending}
+            onPick={setIdCard}
           />
         </fieldset>
 

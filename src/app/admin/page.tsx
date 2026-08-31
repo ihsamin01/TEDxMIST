@@ -264,7 +264,7 @@ export default async function AdminPage({
               <Th>University</Th>
               <Th>Department</Th>
               <Th>Year</Th>
-              <Th>Student ID</Th>
+              <Th>ID card</Th>
               <Th>Method</Th>
               <Th>Transaction ID</Th>
               <Th>T-shirt</Th>
@@ -299,7 +299,20 @@ export default async function AdminPage({
                 <Td>{row.university}</Td>
                 <Td>{row.department}</Td>
                 <Td>{row.study_year}</Td>
-                <Td>{row.student_id}</Td>
+                <Td>
+                  {row.id_card_path ? (
+                    <a
+                      href={`/admin/id-card?row=${row.id}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="font-semibold text-ted hover:underline"
+                    >
+                      View
+                    </a>
+                  ) : (
+                    (row.student_id ?? "—")
+                  )}
+                </Td>
                 <Td>{row.payment_method}</Td>
                 <Td>
                   <code className="text-xs tracking-wide">

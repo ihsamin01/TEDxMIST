@@ -2,29 +2,6 @@ import Reveal from "./Reveal";
 import Section from "./Section";
 import { about, event } from "@/config/event";
 
-function Panel({
-  heading,
-  body,
-  delay,
-}: {
-  heading: string;
-  body: string;
-  delay: number;
-}) {
-  return (
-    <Reveal delay={delay}>
-      <div className="flex h-full flex-col items-center rounded-2xl border border-line bg-ink-soft/30 px-6 py-9 text-center transition-colors duration-300 hover:border-ted/40 sm:px-9 sm:py-11">
-        <h3 className="mb-5 text-xs font-bold tracking-[0.2em] text-ted uppercase">
-          {heading}
-        </h3>
-        <p className="text-base leading-relaxed text-pretty text-white/75 sm:text-lg">
-          {body}
-        </p>
-      </div>
-    </Reveal>
-  );
-}
-
 export default function About() {
   return (
     <Section
@@ -33,18 +10,36 @@ export default function About() {
       title={`About ${event.name}`}
       intro="An independently organized TEDx event, hosted on the MIST campus in Mirpur Cantonment."
     >
-      <div className="grid gap-5 md:grid-cols-2 md:gap-6">
-        <Panel
-          heading="What is a TEDx event?"
-          body={about.whatIsTedx}
-          delay={0}
-        />
-        <Panel heading="Our event" body={about.ourEvent} delay={130} />
-      </div>
+      {/*
+        One centred statement rather than a row of panels. The single red dot
+        above it is the TEDx shorthand for one idea, and the same mark the hero
+        sends its rings out from.
+      */}
+      <Reveal>
+        <div className="mx-auto max-w-3xl text-center">
+          <span
+            aria-hidden
+            className="mx-auto block h-2.5 w-2.5 rounded-full bg-ted shadow-[0_0_36px_10px_rgba(235,0,40,0.35)]"
+          />
+
+          <p className="mt-9 text-[clamp(1.6rem,5.5vw,2.75rem)] leading-[1.12] font-black tracking-tight text-balance">
+            {about.headline}
+          </p>
+
+          <span
+            aria-hidden
+            className="mx-auto mt-9 block h-px w-16 bg-line"
+          />
+
+          <p className="mt-9 text-base leading-relaxed text-pretty text-white/70 sm:text-lg">
+            {about.ourEvent}
+          </p>
+        </div>
+      </Reveal>
 
       {/* The theme, given its own weight on the page. */}
-      <Reveal delay={220}>
-        <figure className="relative mt-16 overflow-hidden rounded-3xl border border-line bg-ink-soft px-6 py-14 text-center sm:px-12 md:mt-24 md:py-20">
+      <Reveal delay={160}>
+        <figure className="relative mt-20 overflow-hidden rounded-3xl border border-line bg-ink-soft px-6 py-14 text-center sm:px-12 md:mt-28 md:py-20">
           {/* A faint red bloom behind the theme, echoing the hero. */}
           <div
             aria-hidden
