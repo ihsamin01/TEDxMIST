@@ -327,9 +327,8 @@ export default function RegisterForm() {
         />
         <Field
           name="facebook"
-          label="Facebook"
+          label="Facebook profile"
           type="url"
-          optional
           value={values.facebook}
           onChange={set("facebook")}
           error={error("facebook")}

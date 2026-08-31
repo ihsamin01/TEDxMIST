@@ -31,7 +31,7 @@ const FIELDS = [
  * `university_other` is only required when the dropdown says "Other", which is
  * checked separately below.
  */
-const OPTIONAL = new Set(["facebook", "university_other"]);
+const OPTIONAL = new Set(["university_other"]);
 
 const LABELS: Record<string, string> = {
   full_name: "Full name",
@@ -45,6 +45,7 @@ const LABELS: Record<string, string> = {
   payment_method: "Payment method",
   transaction_id: "Transaction ID",
   emergency_contact: "Emergency contact",
+  facebook: "Facebook profile",
 };
 
 /**
@@ -53,6 +54,13 @@ const LABELS: Record<string, string> = {
  */
 const PHONE = /^(\+?88)?01[3-9]\d{8}$/;
 const EMAIL = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
+
+/**
+ * A link to an actual Facebook profile, not just the word "facebook". The
+ * trailing path is required, so facebook.com on its own is rejected.
+ */
+const FACEBOOK =
+  /^https?:\/\/(www\.|m\.|web\.|mbasic\.)?(facebook\.com|fb\.com|fb\.me)\/[^/?#\s][^\s]*$/i;
 
 export async function register(
   _prev: FormState,
@@ -66,6 +74,13 @@ export async function register(
   const values: Record<string, string> = {};
   for (const field of FIELDS) {
     values[field] = String(formData.get(field) ?? "").trim();
+  }
+
+  // People type "facebook.com/x" as often as the full URL, so add the scheme
+  // before validating rather than after. It also keeps the link in the admin
+  // table absolute.
+  if (values.facebook && !/^https?:\/\//i.test(values.facebook)) {
+    values.facebook = `https://${values.facebook}`;
   }
 
   // 2. Validate.
@@ -112,6 +127,11 @@ export async function register(
     errors.payment_method = "Pick one of the listed payment methods.";
   }
 
+  if (values.facebook && !FACEBOOK.test(values.facebook)) {
+    errors.facebook =
+      "Paste the link to your Facebook profile, for example https://facebook.com/yourname.";
+  }
+
   if (values.transaction_id && values.transaction_id.length < 6) {
     errors.transaction_id = "Transaction IDs are at least 6 characters.";
   }
@@ -119,13 +139,6 @@ export async function register(
   if (Object.keys(errors).length > 0) {
     return { ok: false, message: "Please fix the highlighted fields.", errors };
   }
-
-  // 3. People often type "facebook.com/x" with no https, which would make
-  //    the link in the admin table relative.
-  const withScheme = (url: string) =>
-    !url || /^https?:\/\//i.test(url) ? url : `https://${url}`;
-
-  values.facebook = withScheme(values.facebook);
 
   // Store what they typed, not the literal "Other (not listed)", so the admin
   // table and the exported CSV read as real university names throughout.
@@ -172,7 +185,7 @@ export async function register(
     transaction_id: values.transaction_id,
     amount: registration.fee || null,
     emergency_contact: values.emergency_contact,
-    facebook: values.facebook || null,
+    facebook: values.facebook,
   });
 
   if (error) {
