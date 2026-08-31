@@ -6,6 +6,7 @@ import Select from "./Select";
 import { register } from "@/app/register/actions";
 import type { FormState } from "@/app/register/actions";
 import { event, registration } from "@/config/event";
+import { OTHER_UNIVERSITY, universityGroups } from "@/config/universities";
 
 /* Shared input styling. */
 
@@ -27,6 +28,10 @@ type FieldProps = {
   optional?: boolean;
   /** Renders a dropdown instead of a text input. */
   options?: readonly string[];
+  /** Renders a dropdown with headings instead of a text input. */
+  groups?: readonly { label: string; options: readonly string[] }[];
+  /** Adds a filter box to the dropdown. Worth it past about fifteen options. */
+  searchable?: boolean;
   /** Spans both columns. */
   wide?: boolean;
 };
@@ -41,6 +46,8 @@ function Field({
   placeholder,
   optional,
   options,
+  groups,
+  searchable,
   wide,
 }: FieldProps) {
   return (
@@ -55,13 +62,16 @@ function Field({
         )}
       </label>
 
-      {options ? (
+      {options || groups ? (
         <Select
           id={name}
           name={name}
           value={value}
           onChange={onChange}
           options={options}
+          groups={groups}
+          searchable={searchable}
+          placeholder={placeholder}
           invalid={Boolean(error)}
           describedBy={error ? `${name}-error` : undefined}
         />
@@ -104,6 +114,8 @@ const BLANK = {
   email: "",
   phone: "",
   university: "",
+  /** Only used when "Other" is picked in the university dropdown. */
+  university_other: "",
   department: "",
   study_year: "",
   student_id: "",
@@ -232,11 +244,25 @@ export default function RegisterForm() {
         <Field
           name="university"
           label="University"
-          placeholder="MIST"
+          placeholder="Select your university"
+          groups={universityGroups}
+          searchable
           value={values.university}
           onChange={set("university")}
           error={error("university")}
         />
+
+        {/* Only in the way when the list genuinely does not have them. */}
+        {values.university === OTHER_UNIVERSITY && (
+          <Field
+            name="university_other"
+            label="Your university"
+            placeholder="Type the full name"
+            value={values.university_other}
+            onChange={set("university_other")}
+            error={error("university_other")}
+          />
+        )}
         <Field
           name="department"
           label="Department"

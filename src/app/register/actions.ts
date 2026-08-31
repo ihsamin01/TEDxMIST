@@ -1,6 +1,7 @@
 "use server";
 
 import { event, registration } from "@/config/event";
+import { OTHER_UNIVERSITY, allUniversities } from "@/config/universities";
 import { supabase } from "@/lib/supabase";
 
 export type FormState = {
@@ -16,6 +17,7 @@ const FIELDS = [
   "email",
   "phone",
   "university",
+  "university_other",
   "department",
   "study_year",
   "student_id",
@@ -25,13 +27,18 @@ const FIELDS = [
   "facebook",
 ] as const;
 
-const OPTIONAL = new Set(["facebook"]);
+/**
+ * `university_other` is only required when the dropdown says "Other", which is
+ * checked separately below.
+ */
+const OPTIONAL = new Set(["facebook", "university_other"]);
 
 const LABELS: Record<string, string> = {
   full_name: "Full name",
   email: "Email",
   phone: "Phone number",
   university: "University",
+  university_other: "Your university",
   department: "Department",
   study_year: "Year or semester",
   student_id: "Student ID",
@@ -82,6 +89,17 @@ export async function register(
     errors.emergency_contact = "Use a Bangladeshi mobile number.";
   }
 
+  // The dropdown is a hidden input, so never trust what comes back: it has to
+  // be a name we actually offer.
+  if (values.university && !allUniversities.includes(values.university)) {
+    errors.university = "Pick a university from the list.";
+  }
+
+  // "Other" is only a real answer once they have typed the actual name.
+  if (values.university === OTHER_UNIVERSITY && !values.university_other) {
+    errors.university_other = "Tell us which university you attend.";
+  }
+
   if (
     values.payment_method &&
     !registration.paymentMethods.includes(values.payment_method)
@@ -103,6 +121,12 @@ export async function register(
     !url || /^https?:\/\//i.test(url) ? url : `https://${url}`;
 
   values.facebook = withScheme(values.facebook);
+
+  // Store what they typed, not the literal "Other (not listed)", so the admin
+  // table and the exported CSV read as real university names throughout.
+  if (values.university === OTHER_UNIVERSITY) {
+    values.university = values.university_other;
+  }
 
   // 4. Stop at capacity, if one is set. Rejected rows free their seat.
   const db = supabase();
