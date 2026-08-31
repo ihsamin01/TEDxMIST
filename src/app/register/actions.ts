@@ -1,7 +1,7 @@
 "use server";
 
 import { event, registration } from "@/config/event";
-import { OTHER_UNIVERSITY, allUniversities } from "@/config/universities";
+import { OTHER_UNIVERSITY, universities } from "@/config/universities";
 import { supabase } from "@/lib/supabase";
 
 export type FormState = {
@@ -47,7 +47,10 @@ const LABELS: Record<string, string> = {
   emergency_contact: "Emergency contact",
 };
 
-/** Bangladeshi mobile numbers, with or without +88. */
+/**
+ * Bangladeshi mobile numbers: 01, an operator digit, then eight more — eleven
+ * digits in total. An optional +88 or 88 country code is allowed in front.
+ */
 const PHONE = /^(\+?88)?01[3-9]\d{8}$/;
 const EMAIL = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
 
@@ -79,19 +82,21 @@ export async function register(
   }
 
   if (values.phone && !PHONE.test(values.phone.replace(/[\s-]/g, ""))) {
-    errors.phone = "Use a Bangladeshi mobile number, e.g. 01712345678.";
+    errors.phone =
+      "Enter an 11-digit Bangladeshi mobile number, for example 01712345678.";
   }
 
   if (
     values.emergency_contact &&
     !PHONE.test(values.emergency_contact.replace(/[\s-]/g, ""))
   ) {
-    errors.emergency_contact = "Use a Bangladeshi mobile number.";
+    errors.emergency_contact =
+      "Enter an 11-digit Bangladeshi mobile number, for example 01712345678.";
   }
 
   // The dropdown is a hidden input, so never trust what comes back: it has to
   // be a name we actually offer.
-  if (values.university && !allUniversities.includes(values.university)) {
+  if (values.university && !universities.includes(values.university)) {
     errors.university = "Pick a university from the list.";
   }
 

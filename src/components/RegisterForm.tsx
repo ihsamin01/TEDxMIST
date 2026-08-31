@@ -6,7 +6,7 @@ import Select from "./Select";
 import { register } from "@/app/register/actions";
 import type { FormState } from "@/app/register/actions";
 import { event, registration } from "@/config/event";
-import { OTHER_UNIVERSITY, universityGroups } from "@/config/universities";
+import { OTHER_UNIVERSITY, universities } from "@/config/universities";
 
 /* Shared input styling. */
 
@@ -28,8 +28,6 @@ type FieldProps = {
   optional?: boolean;
   /** Renders a dropdown instead of a text input. */
   options?: readonly string[];
-  /** Renders a dropdown with headings instead of a text input. */
-  groups?: readonly { label: string; options: readonly string[] }[];
   /** Adds a filter box to the dropdown. Worth it past about fifteen options. */
   searchable?: boolean;
   /** Spans both columns. */
@@ -46,7 +44,6 @@ function Field({
   placeholder,
   optional,
   options,
-  groups,
   searchable,
   wide,
 }: FieldProps) {
@@ -62,14 +59,13 @@ function Field({
         )}
       </label>
 
-      {options || groups ? (
+      {options ? (
         <Select
           id={name}
           name={name}
           value={value}
           onChange={onChange}
           options={options}
-          groups={groups}
           searchable={searchable}
           placeholder={placeholder}
           invalid={Boolean(error)}
@@ -217,7 +213,6 @@ export default function RegisterForm() {
         <Field
           name="full_name"
           label="Full name"
-          placeholder="As it should appear on your badge"
           value={values.full_name}
           onChange={set("full_name")}
           error={error("full_name")}
@@ -227,7 +222,6 @@ export default function RegisterForm() {
           name="email"
           label="Email"
           type="email"
-          placeholder="you@example.com"
           value={values.email}
           onChange={set("email")}
           error={error("email")}
@@ -236,7 +230,6 @@ export default function RegisterForm() {
           name="phone"
           label="Phone number"
           type="tel"
-          placeholder="01712345678"
           value={values.phone}
           onChange={set("phone")}
           error={error("phone")}
@@ -244,8 +237,7 @@ export default function RegisterForm() {
         <Field
           name="university"
           label="University"
-          placeholder="Select your university"
-          groups={universityGroups}
+          options={universities}
           searchable
           value={values.university}
           onChange={set("university")}
@@ -257,7 +249,6 @@ export default function RegisterForm() {
           <Field
             name="university_other"
             label="Your university"
-            placeholder="Type the full name"
             value={values.university_other}
             onChange={set("university_other")}
             error={error("university_other")}
@@ -266,7 +257,6 @@ export default function RegisterForm() {
         <Field
           name="department"
           label="Department"
-          placeholder="Computer Science and Engineering"
           value={values.department}
           onChange={set("department")}
           error={error("department")}
@@ -282,7 +272,6 @@ export default function RegisterForm() {
         <Field
           name="student_id"
           label="Student ID"
-          placeholder="Your university roll or ID number"
           value={values.student_id}
           onChange={set("student_id")}
           error={error("student_id")}
@@ -318,7 +307,6 @@ export default function RegisterForm() {
         <Field
           name="transaction_id"
           label="Transaction ID"
-          placeholder="e.g. 9F7K2LM4XQ"
           value={values.transaction_id}
           onChange={set("transaction_id")}
           error={error("transaction_id")}
@@ -332,7 +320,6 @@ export default function RegisterForm() {
           name="emergency_contact"
           label="Emergency contact number"
           type="tel"
-          placeholder="A parent or guardian we can call"
           value={values.emergency_contact}
           onChange={set("emergency_contact")}
           error={error("emergency_contact")}
@@ -342,7 +329,6 @@ export default function RegisterForm() {
           name="facebook"
           label="Facebook"
           type="url"
-          placeholder="https://facebook.com/..."
           optional
           value={values.facebook}
           onChange={set("facebook")}
