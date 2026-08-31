@@ -185,6 +185,77 @@ body {
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)'/%3E%3C/svg%3E");
 }
 
+
+/* ---------------------------------------------------------------------------
+ * About section
+ * The hero throws rings outward from a dot. This does the same idea quieter:
+ * slower rings, a bloom that never settles, and headline words that arrive one
+ * after another rather than all at once.
+ * ------------------------------------------------------------------------ */
+
+@keyframes echo-ripple {
+  0% {
+    transform: scale(0.15);
+    opacity: 0;
+  }
+  12% {
+    opacity: 0.45;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 0;
+  }
+}
+
+.echo-ripple {
+  animation: echo-ripple 7s cubic-bezier(0.22, 0.61, 0.36, 1) infinite;
+}
+
+/* A red wash that drifts, so the block is never completely still. */
+@keyframes bloom-drift {
+  0%,
+  100% {
+    transform: translate3d(-5%, -3%, 0) scale(1);
+  }
+  33% {
+    transform: translate3d(4%, 3%, 0) scale(1.14);
+  }
+  66% {
+    transform: translate3d(-2%, 5%, 0) scale(0.94);
+  }
+}
+
+.bloom-drift {
+  animation: bloom-drift 24s ease-in-out infinite;
+}
+
+/* Headline words, lifted into place in sequence. */
+@keyframes word-rise {
+  from {
+    opacity: 0;
+    transform: translateY(0.55em);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+[data-words] span {
+  display: inline-block;
+  opacity: 0;
+}
+
+[data-words].is-visible span {
+  animation: word-rise 0.75s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+/* The glow that trails the pointer across the section. */
+.cursor-glow {
+  transition: opacity 0.5s ease;
+  will-change: transform;
+}
+
 /* ---------------------------------------------------------------------------
  * Reduced motion
  * Anyone who has asked their OS for less motion gets a still, complete page.
@@ -214,5 +285,24 @@ body {
   .rise-in {
     opacity: 1;
     animation: none;
+  }
+
+  .echo-ripple {
+    animation: none;
+    opacity: 0.14;
+  }
+
+  .bloom-drift {
+    animation: none;
+  }
+
+  [data-words] span,
+  [data-words].is-visible span {
+    opacity: 1;
+    animation: none;
+  }
+
+  .cursor-glow {
+    display: none;
   }
 }
