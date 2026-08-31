@@ -92,6 +92,36 @@ function Field({
   );
 }
 
+/**
+ * A field with nothing to decide. Shown when a list of options has exactly
+ * one entry — a dropdown you cannot choose anything in is just a worse label.
+ * The hidden input means the form still submits it like any other field.
+ */
+function FixedField({
+  name,
+  label,
+  value,
+}: {
+  name: string;
+  label: string;
+  value: string;
+}) {
+  return (
+    <div>
+      <p className="mb-2 block text-xs font-bold tracking-[0.12em] text-muted uppercase">
+        {label}
+      </p>
+
+      <input type="hidden" name={name} value={value} />
+
+      <div className="flex items-center gap-2.5 rounded-xl border border-line bg-ink-soft px-4 py-3 text-[0.95rem] font-semibold">
+        <span aria-hidden className="h-2 w-2 rounded-full bg-ted" />
+        {value}
+      </div>
+    </div>
+  );
+}
+
 function Legend({ children }: { children: React.ReactNode }) {
   return (
     <h2 className="mb-6 flex items-center gap-3 text-xs font-bold tracking-[0.22em] text-ted uppercase sm:col-span-2">
@@ -102,6 +132,9 @@ function Legend({ children }: { children: React.ReactNode }) {
 }
 
 /* The form. */
+/** Set only while exactly one payment method is on offer. */
+const ONLY_PAYMENT_METHOD =
+  registration.paymentMethods.length === 1 ? registration.paymentMethods[0] : "";
 
 const BLANK = {
   full_name: "",
@@ -112,7 +145,7 @@ const BLANK = {
   university_other: "",
   department: "",
   study_year: "",
-  payment_method: "",
+  payment_method: ONLY_PAYMENT_METHOD,
   transaction_id: "",
   tshirt_size: "",
   emergency_contact: "",
@@ -134,6 +167,7 @@ const STEP_ONE: FieldName[] = [
 
 // Lives here because a "use server" file can only export async functions.
 const EMPTY_STATE: FormState = { ok: false, message: "", errors: {} };
+
 
 const YEARS = [
   "1st year",
@@ -561,14 +595,22 @@ export default function RegisterForm() {
           <VenueCard />
           <PaymentCard university={values.university} />
 
-          <Field
-            name="payment_method"
-            label="Payment method"
-            options={registration.paymentMethods}
-            value={values.payment_method}
-            onChange={set("payment_method")}
-            error={error("payment_method")}
-          />
+          {ONLY_PAYMENT_METHOD ? (
+            <FixedField
+              name="payment_method"
+              label="Payment method"
+              value={ONLY_PAYMENT_METHOD}
+            />
+          ) : (
+            <Field
+              name="payment_method"
+              label="Payment method"
+              options={registration.paymentMethods}
+              value={values.payment_method}
+              onChange={set("payment_method")}
+              error={error("payment_method")}
+            />
+          )}
           <Field
             name="transaction_id"
             label="Transaction ID"

@@ -123,8 +123,12 @@ export const registration: {
   /** Printed in front of every amount. */
   currency: "BDT",
 
-  /** The options in the "how did you pay" dropdown on the form. */
-  paymentMethods: ["bKash", "Nagad", "Rocket", "Bank transfer"],
+  /**
+   * How people are allowed to pay. With one entry the form stops being a
+   * dropdown and simply states it; add a second and the dropdown comes back
+   * on its own.
+   */
+  paymentMethods: ["bKash"],
 
   /**
    * The number attendees send the fee to, shown on the payment step.
