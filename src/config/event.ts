@@ -315,6 +315,10 @@ export const team: Member[] = [
     name: "Isbatul Haque Samin",
     role: "Licensee & Lead Organizer",
   },
+  {
+    name: "Jannat Mustary Bushra",
+    role: "Co-organizer",
+  },
   { name: "Team Member", role: "Curation" },
   { name: "Team Member", role: "Sponsorship" },
   { name: "Team Member", role: "Design & Branding" },
@@ -338,8 +342,8 @@ export const socials: {
   instagram: "",
   linkedin: "",
   youtube: "",
-  /** Your official listing on TED's own site, once TED publishes it. */
-  ted: "https://www.ted.com/tedx/events",
+  /** The official TEDxMIST listing on TED's own site. */
+  ted: "https://www.ted.com/tedx/events/70695",
 };
 
 /* ---------------------------------------------------------------------------
