@@ -1,5 +1,4 @@
 import Countdown from "./Countdown";
-import EchoRings from "./EchoRings";
 import RegisterButton from "./RegisterButton";
 import ScrollCue from "./ScrollCue";
 import { event, registration } from "@/config/event";
@@ -21,9 +20,7 @@ export default function Hero() {
   const suffix = event.name.replace(/^TEDx/, "");
 
   return (
-    <section className="relative flex min-h-[100svh] flex-col items-center justify-center overflow-hidden px-5 pt-28 pb-24 sm:px-6">
-      <EchoRings />
-
+    <section className="relative flex min-h-[100svh] flex-col items-center justify-center px-5 pt-28 pb-24 sm:px-6">
       <div className="relative flex w-full max-w-4xl flex-col items-center text-center">
         {/* Theme */}
         <p

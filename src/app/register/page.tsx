@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import RegisterForm from "@/components/RegisterForm";
+import SiteBackdrop from "@/components/SiteBackdrop";
 import { event, registration } from "@/config/event";
 import { isSupabaseConfigured } from "@/lib/supabase";
 import { seatsLeft } from "./actions";
@@ -16,7 +17,7 @@ export const dynamic = "force-dynamic";
 /** Slim header, no nav. */
 function PageHeader() {
   return (
-    <header className="border-b border-line">
+    <header className="relative z-10 border-b border-line">
       <div className="mx-auto flex h-16 max-w-3xl items-center justify-between px-5 sm:px-6 md:h-20">
         <Link
           href="/"
@@ -59,9 +60,11 @@ export default async function RegisterPage() {
 
   return (
     <>
+      <SiteBackdrop />
+
       <PageHeader />
 
-      <main className="relative overflow-hidden px-5 py-16 sm:px-6 md:py-24">
+      <main className="relative z-10 overflow-hidden px-5 py-16 sm:px-6 md:py-24">
         {/* Same red wash as the landing page. */}
         <div
           aria-hidden
@@ -113,7 +116,7 @@ export default async function RegisterPage() {
         </div>
       </main>
 
-      <footer className="border-t border-line px-5 py-10 text-center sm:px-6">
+      <footer className="relative z-10 border-t border-line px-5 py-10 text-center sm:px-6">
         <p className="text-xs leading-relaxed text-muted">
           This independent TEDx event is operated under license from TED.
         </p>
