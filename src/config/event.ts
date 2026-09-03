@@ -59,11 +59,19 @@ export const event: {
     hall: "Shaheed Yamin Auditorium",
     short: "MIST, Dhaka",
     address: "Mirpur Cantonment, Dhaka, Bangladesh",
-    /** Used by the "View on map" links. */
-    mapUrl: "https://maps.google.com/?q=Military+Institute+of+Science+and+Technology+Dhaka",
-    /** The same place, as an <iframe> the registration page embeds. */
-    mapEmbedUrl:
-      "https://www.google.com/maps?q=Military+Institute+of+Science+and+Technology,+Mirpur+Cantonment,+Dhaka&output=embed",
+    /**
+     * Used by the "View on map" links. Google spells the hall "Shahid", not
+     * "Shaheed", so the query has to match its spelling or it falls back to
+     * the middle of the campus.
+     */
+    mapUrl:
+      "https://maps.google.com/?q=Shahid+Yamin+Auditorium,+MIST,+Mirpur+Cantonment,+Dhaka",
+    /**
+     * The same hall as an <iframe> for the registration page. This uses the
+     * building's plus code, which points at the auditorium itself rather than
+     * somewhere in the middle of the campus.
+     */
+    mapEmbedUrl: "https://www.google.com/maps?q=R9Q4%2B5R8+Dhaka&output=embed",
   },
 
   organizer: {
