@@ -117,7 +117,7 @@ export function confirmationEmailHtml(reg: Registration) {
           <div style="color:${RED};font-size:11px;letter-spacing:2px;text-transform:uppercase;font-weight:700;border-bottom:1px solid #e5e5e5;padding-bottom:8px;">On the day</div>
           <ul style="margin:12px 0 0;padding-left:18px;color:#444;font-size:14px;line-height:1.9;">
             <li>Bring your <strong>student ID card</strong> along with this ticket number.</li>
-            <li>Arrive by <strong>09:30</strong>. The desk closes when the first talk starts.</li>
+            <li>Doors open <strong>30 minutes</strong> before the start time above. The desk closes when the first talk begins.</li>
             <li>Seats are not numbered, so earlier arrival means a better view.</li>
             <li>Can't make it? Email us so we can give your seat to someone on the waiting list.</li>
           </ul>
@@ -172,7 +172,7 @@ function text(reg: Registration) {
     "",
     "ON THE DAY",
     "- Bring your student ID card along with this ticket number.",
-    "- Arrive by 09:30; the desk closes when the first talk starts.",
+    "- Doors open 30 minutes before the start time above; the desk closes when the first talk begins.",
     "- Seats are not numbered, so earlier arrival means a better view.",
     "- Can't make it? Email us so we can pass your seat on.",
     "",

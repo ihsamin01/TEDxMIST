@@ -47,11 +47,11 @@ export const event: {
    * Format: YYYY-MM-DDTHH:mm:ss+06:00   ( +06:00 = Bangladesh Standard Time )
    * Change the time here if your doors open at a different hour.
    */
-  startsAt: "2026-11-19T10:00:00+06:00",
+  startsAt: "2027-01-21T15:00:00+06:00",
 
   /** Shown as plain text in the hero and the schedule heading. */
-  dateLabel: "19 November 2026",
-  timeLabel: "10:00 AM - 5:00 PM",
+  dateLabel: "21 January 2027",
+  timeLabel: "3:00 PM - 7:00 PM",
 
   venue: {
     name: "Military Institute of Science and Technology (MIST)",
@@ -265,45 +265,45 @@ export type Slot = {
 /** Placeholder running order. Edit the times and titles as the day firms up. */
 export const schedule: Slot[] = [
   {
-    time: "09:30",
+    time: "14:30",
     title: "Registration & Welcome Coffee",
     detail: "Badge pickup at the auditorium lobby.",
   },
   {
-    time: "10:00",
+    time: "15:00",
     title: "Opening Remarks",
     detail: "A word from the organizing team and the MIST administration.",
   },
   {
-    time: "10:20",
+    time: "15:15",
     title: "Session One: Foundations",
     detail: "Three talks, followed by a short TED Talk screening.",
     highlight: true,
   },
   {
-    time: "12:00",
-    title: "Lunch & Networking",
-    detail: "Prayer space available.",
+    time: "16:15",
+    title: "Break & Networking",
+    detail: "Refreshments in the lobby. Prayer space available.",
   },
   {
-    time: "13:30",
+    time: "16:45",
     title: "Session Two: Signals",
     detail: "Three talks exploring what today is already sending forward.",
     highlight: true,
   },
   {
-    time: "15:00",
+    time: "17:45",
     title: "Interactive Break",
     detail: "Installations, sponsor booths and coffee.",
   },
   {
-    time: "15:45",
+    time: "18:00",
     title: "Session Three: Echoes",
     detail: "Closing talks and an on-stage conversation with the speakers.",
     highlight: true,
   },
   {
-    time: "16:45",
+    time: "18:45",
     title: "Closing & Group Photo",
   },
 ];
@@ -379,5 +379,5 @@ export const marqueeWords: string[] = [
   "One stage",
   "One day",
   "MIST, Dhaka",
-  "19 November 2026",
+  "21 January 2027",
 ];
