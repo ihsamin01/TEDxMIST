@@ -176,14 +176,14 @@ export function feeFor(university: string): number {
  * ------------------------------------------------------------------------ */
 
 export const about = {
-  /** The one line the About section leads with. Keep it short and flat. */
-  headline: "The first TEDx event ever held at MIST.",
+  /** The line the About section leads with, set in large type. */
+  headline: "An echo is a sound that took the long way back.",
 
   /** The paragraph under it. */
-  ourEvent: `TEDxMIST brings TEDx to the Military Institute of Science and Technology for the first time, and students are running the whole thing themselves. For one day we are putting engineers, researchers, artists, founders and storytellers from across Bangladesh on one stage in Mirpur Cantonment, in a room small enough that you can go and argue with them afterwards.`,
+  ourEvent: `You make it, it leaves, and for a while you hear nothing at all. Then it returns, carrying everything it touched on the way. TEDxMIST is the first TEDx event ever held at the Military Institute of Science and Technology, a campus full of people who build things that will outlast them.`,
 
   /** What the theme means. Shown in its own highlighted block. */
-  themeMeaning: `An echo is something you start and then have to live inside. Nothing we decide today stays where we left it. A line of code, a policy, a design, a choice to speak up or keep quiet: all of it travels outward and lands on people who never got a say in it. So we put an awkward question to our speakers. What are you sending forward, and who has to hear it?`,
+  themeMeaning: `Decisions behave the same way. A line of code. A policy. A bridge. A choice to speak up or to keep quiet. None of them stay where we left them. They travel out past the room, past the year, past the people who made them, and they land somewhere we will never stand, in the hands of a generation nobody thought to consult. So we are putting one uncomfortable question to everyone who takes our stage. What are you sending forward, and who will have to hear it?`,
 } as const;
 
 /* ---------------------------------------------------------------------------

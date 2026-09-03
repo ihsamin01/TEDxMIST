@@ -25,8 +25,8 @@ export default function Register() {
 
         <p className="mx-auto mt-7 max-w-xl text-base leading-relaxed text-pretty text-white/75 sm:text-lg">
           Attendance is kept deliberately small, so the room stays intimate
-          enough that you can actually talk to the speakers afterwards.
-          Registration takes about a minute.
+          enough that you can actually talk to the speakers afterwards. Come
+          and hear what tomorrow already sounds like.
         </p>
 
         <div className="mt-10 flex justify-center">
