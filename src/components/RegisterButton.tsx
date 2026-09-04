@@ -41,8 +41,7 @@ export default function RegisterButton({
   size = "md",
   className = "",
 }: Props) {
-  const padding =
-    size === "lg" ? "px-11 py-5 text-xl" : "px-7 py-3.5 text-base";
+  const padding = size === "lg" ? "px-10 py-5 text-lg" : "px-7 py-3.5 text-base";
   const base = `inline-flex items-center justify-center gap-2.5 rounded-full font-bold tracking-tight transition ${padding} ${className}`;
   const look =
     "bg-ted text-white hover:-translate-y-0.5 hover:bg-ted-dark hover:shadow-[0_10px_30px_-8px_rgba(235,0,40,0.6)]";

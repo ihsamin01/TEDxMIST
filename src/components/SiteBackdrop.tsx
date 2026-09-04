@@ -10,10 +10,13 @@ import { useEffect, useRef } from "react";
  * the same slowly breathing field, which is what stops the page below the
  * hero from feeling like a different, flatter website.
  *
- * The single dot is the TEDx shorthand for one idea, and the rings leaving it
- * are the event's theme drawn literally. The whole cluster drifts a little
- * towards the pointer, written straight to the DOM inside a rAF callback so
- * moving the mouse never causes a React render.
+ * Sizing is deliberately not the same on a phone as on a desktop. The rings
+ * are drawn as a circle centred on the viewport, so the part you actually see
+ * is the arc crossing the screen. Make that circle much wider than the screen
+ * and the only visible arc sits hard against the edges, which is exactly where
+ * the vignette has already faded it to black: the effect disappears. On narrow
+ * screens the field is therefore smaller, so the rings sweep through the middle
+ * where they can be seen, and the vignette is gentler to match.
  */
 export default function SiteBackdrop() {
   const fieldRef = useRef<HTMLDivElement>(null);
@@ -22,13 +25,13 @@ export default function SiteBackdrop() {
     const field = fieldRef.current;
     if (!field) return;
 
-    // Pointer drift is decoration. Skip it for anyone who asked for less
-    // motion, and on touch screens where there is no pointer to follow.
+    // Motion here is decoration, so anyone who asked for less of it gets none.
     const reduced = window.matchMedia(
       "(prefers-reduced-motion: reduce)",
     ).matches;
+    if (reduced) return;
+
     const canHover = window.matchMedia("(hover: hover)").matches;
-    if (reduced || !canHover) return;
 
     let frame = 0;
     let targetX = 0;
@@ -37,7 +40,7 @@ export default function SiteBackdrop() {
     let currentY = 0;
 
     const render = () => {
-      // Ease towards the pointer rather than snapping to it.
+      // Ease towards the target rather than snapping to it.
       currentX += (targetX - currentX) * 0.05;
       currentY += (targetY - currentY) * 0.05;
 
@@ -49,17 +52,43 @@ export default function SiteBackdrop() {
           : 0;
     };
 
-    const onPointerMove = (e: PointerEvent) => {
-      // -1 .. 1 across the viewport, scaled down to a gentle amount of travel.
-      targetX = (e.clientX / window.innerWidth - 0.5) * 56;
-      targetY = (e.clientY / window.innerHeight - 0.5) * 56;
+    const queue = () => {
       if (frame === 0) frame = requestAnimationFrame(render);
     };
 
-    window.addEventListener("pointermove", onPointerMove, { passive: true });
+    /** Desktop: the field leans towards the pointer. */
+    const onPointerMove = (e: PointerEvent) => {
+      targetX = (e.clientX / window.innerWidth - 0.5) * 56;
+      targetY = (e.clientY / window.innerHeight - 0.5) * 56;
+      queue();
+    };
+
+    /**
+     * Touch: there is no pointer to follow, so the field answers to scrolling
+     * instead. Without this the backdrop is the one part of the site that
+     * never reacts to anything on a phone.
+     */
+    const onScroll = () => {
+      const scrollable =
+        document.documentElement.scrollHeight - window.innerHeight;
+      const progress = scrollable > 0 ? window.scrollY / scrollable : 0;
+
+      // A slow drift across the page, never more than a nudge.
+      targetY = (progress - 0.5) * -70;
+      targetX = Math.sin(progress * Math.PI * 2) * 26;
+      queue();
+    };
+
+    if (canHover) {
+      window.addEventListener("pointermove", onPointerMove, { passive: true });
+    } else {
+      onScroll();
+      window.addEventListener("scroll", onScroll, { passive: true });
+    }
 
     return () => {
       window.removeEventListener("pointermove", onPointerMove);
+      window.removeEventListener("scroll", onScroll);
       if (frame) cancelAnimationFrame(frame);
     };
   }, []);
@@ -74,7 +103,7 @@ export default function SiteBackdrop() {
     >
       <div
         ref={fieldRef}
-        className="absolute top-1/2 left-1/2 h-[min(175vw,1080px)] w-[min(175vw,1080px)] -translate-x-1/2 -translate-y-1/2 will-change-transform"
+        className="absolute top-1/2 left-1/2 h-[min(115vmin,460px)] w-[min(115vmin,460px)] -translate-x-1/2 -translate-y-1/2 will-change-transform md:h-[min(150vmin,1040px)] md:w-[min(150vmin,1040px)]"
       >
         {rings.map((delay) => (
           <span
@@ -88,8 +117,12 @@ export default function SiteBackdrop() {
         <span className="pulse-dot absolute top-1/2 left-1/2 h-3 w-3 rounded-full bg-ted shadow-[0_0_70px_20px_rgba(235,0,40,0.3)]" />
       </div>
 
-      {/* Keeps the rings off the edges, so text never has to fight them. */}
-      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_20%,var(--color-ink)_72%)]" />
+      {/*
+        Keeps the rings off the edges so text never has to fight them. Gentler
+        on phones, where the screen is narrow enough that a hard vignette would
+        swallow the rings entirely.
+      */}
+      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_38%,var(--color-ink)_92%)] md:bg-[radial-gradient(ellipse_at_center,transparent_20%,var(--color-ink)_72%)]" />
     </div>
   );
 }

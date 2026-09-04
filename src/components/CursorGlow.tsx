@@ -21,8 +21,29 @@ export default function CursorGlow() {
     const reduced = window.matchMedia(
       "(prefers-reduced-motion: reduce)",
     ).matches;
+    if (reduced) return;
+
     const canHover = window.matchMedia("(hover: hover)").matches;
-    if (reduced || !canHover) return;
+
+    /*
+     * On a touch screen there is no pointer, so instead of doing nothing the
+     * light simply sits in the middle of the section and fades in while that
+     * section is on screen. The section still lights up as you reach it.
+     */
+    if (!canHover) {
+      const observer = new IntersectionObserver(
+        ([entry]) => {
+          node.style.opacity = entry.isIntersecting ? "1" : "0";
+        },
+        { threshold: 0.25 },
+      );
+
+      const box = section.getBoundingClientRect();
+      node.style.transform = `translate3d(${box.width / 2}px, ${box.height / 2}px, 0) translate(-50%, -50%)`;
+
+      observer.observe(section);
+      return () => observer.disconnect();
+    }
 
     let frame = 0;
     let targetX = 0;
