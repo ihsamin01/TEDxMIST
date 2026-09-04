@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
-import { about, event } from "@/config/event";
+import { about, event, siteUrl } from "@/config/event";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -12,6 +12,9 @@ const inter = Inter({
 const description = `${event.theme}. An independently organized TEDx event at ${event.venue.short} on ${event.dateLabel}. ${about.ourEvent.slice(0, 110)}...`;
 
 export const metadata: Metadata = {
+  /** Makes every relative URL in the tags below absolute. */
+  metadataBase: new URL(siteUrl),
+  alternates: { canonical: "/" },
   title: {
     default: `${event.name}: ${event.theme}`,
     template: `%s | ${event.name}`,

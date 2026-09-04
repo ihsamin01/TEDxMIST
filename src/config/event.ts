@@ -20,6 +20,15 @@
  * fails the moment you fill that field in. Plain `string` keeps every field
  * genuinely editable.
  */
+/**
+ * The address the site is served from, with no trailing slash.
+ *
+ * Search engines and social previews need absolute URLs, so this is what the
+ * sitemap and the share cards are built from. Change it the day tedxmist.com
+ * starts pointing here, and both follow.
+ */
+export const siteUrl = "https://tedxmist.vercel.app";
+
 export const event: {
   name: string;
   theme: string;
