@@ -41,15 +41,15 @@ function Unit({
   pulse?: boolean;
 }) {
   return (
-    <div className="flex min-w-0 flex-col items-center rounded-xl border border-line bg-ink-soft/70 px-2 py-3 backdrop-blur-sm transition-colors duration-300 hover:border-ted/50 sm:rounded-2xl sm:px-5 sm:py-5">
+    <div className="flex min-w-0 flex-col items-center rounded-xl border border-line bg-ink-soft/70 px-1.5 py-3.5 backdrop-blur-sm transition-colors duration-300 hover:border-ted/50 sm:rounded-2xl sm:px-4 sm:py-6">
       <span
-        className={`text-[clamp(1.6rem,7vw,3.5rem)] leading-none font-black tabular-nums ${
+        className={`text-[clamp(1.7rem,7.5vw,4rem)] leading-none font-black tabular-nums ${
           pulse ? "text-ted" : "text-white"
         }`}
       >
         {String(value).padStart(2, "0")}
       </span>
-      <span className="mt-1.5 text-[0.5rem] font-bold tracking-[0.15em] text-muted uppercase sm:mt-2.5 sm:text-[0.65rem] sm:tracking-[0.2em]">
+      <span className="mt-2 text-[0.6rem] font-bold tracking-[0.15em] text-muted uppercase sm:mt-3 sm:text-xs sm:tracking-[0.2em]">
         {label}
       </span>
     </div>
@@ -74,7 +74,7 @@ export default function Countdown({ frozen = false }: Props) {
   if (frozen) {
     return (
       <div
-        className="mx-auto grid w-full max-w-lg grid-cols-4 gap-1.5 opacity-60 sm:gap-3"
+        className="mx-auto grid w-full max-w-3xl grid-cols-4 gap-1.5 opacity-60 sm:gap-3"
         role="timer"
         aria-label="Registration is closed"
       >
@@ -104,7 +104,7 @@ export default function Countdown({ frozen = false }: Props) {
 
   return (
     <div
-      className={`mx-auto grid w-full max-w-lg grid-cols-4 gap-1.5 transition-opacity duration-700 sm:gap-3 ${
+      className={`mx-auto grid w-full max-w-3xl grid-cols-4 gap-1.5 transition-opacity duration-700 sm:gap-3 ${
         totalSeconds === null ? "opacity-0" : "opacity-100"
       }`}
       role="timer"

@@ -6,10 +6,10 @@ import { event, registration } from "@/config/event";
 function Meta({ label, value }: { label: string; value: string }) {
   return (
     <div className="px-2 text-center">
-      <p className="mb-1.5 text-[0.55rem] font-bold tracking-[0.2em] text-ted uppercase sm:text-[0.65rem]">
+      <p className="mb-2 text-[0.65rem] font-bold tracking-[0.2em] text-ted uppercase sm:text-xs">
         {label}
       </p>
-      <p className="text-xs leading-snug font-semibold text-balance text-white/90 sm:text-sm md:text-base">
+      <p className="text-sm leading-snug font-semibold text-balance text-white/90 sm:text-base md:text-lg">
         {value}
       </p>
     </div>
@@ -24,7 +24,7 @@ export default function Hero({ open }: { open: boolean }) {
       <div className="relative flex w-full max-w-4xl flex-col items-center text-center">
         {/* Theme */}
         <p
-          className="rise-in mb-5 rounded-full border border-ted/40 px-4 py-1.5 text-[0.6rem] font-bold tracking-[0.25em] text-ted uppercase sm:mb-7 sm:text-xs sm:tracking-[0.3em]"
+          className="rise-in mb-5 rounded-full border border-ted/40 px-4 py-1.5 text-[0.7rem] font-bold tracking-[0.25em] text-ted uppercase sm:mb-7 sm:text-sm sm:tracking-[0.3em]"
           style={{ animationDelay: "0.1s" }}
         >
           {event.theme}
@@ -48,7 +48,7 @@ export default function Hero({ open }: { open: boolean }) {
 
         {/* Tagline */}
         <p
-          className="rise-in mt-7 max-w-lg text-base leading-snug font-medium text-balance text-white/80 sm:mt-9 sm:text-xl md:text-2xl"
+          className="rise-in mt-7 max-w-xl text-lg leading-snug font-medium text-balance text-white/80 sm:mt-9 sm:text-2xl md:text-3xl"
           style={{ animationDelay: "0.44s" }}
         >
           {event.tagline}
@@ -70,7 +70,7 @@ export default function Hero({ open }: { open: boolean }) {
           style={{ animationDelay: "0.64s" }}
         >
           <p
-            className={`mb-4 text-[0.55rem] font-bold tracking-[0.2em] uppercase sm:text-[0.65rem] ${
+            className={`mb-5 text-[0.65rem] font-bold tracking-[0.2em] uppercase sm:text-xs ${
               open ? "text-muted" : "text-ted"
             }`}
           >
@@ -85,7 +85,7 @@ export default function Hero({ open }: { open: boolean }) {
           style={{ animationDelay: "0.74s" }}
         >
           <RegisterButton open={open} size="lg" />
-          <p className="max-w-xs text-xs leading-snug text-balance text-muted sm:text-sm">
+          <p className="max-w-sm text-sm leading-snug text-balance text-muted sm:text-base">
             {registration.note}
           </p>
         </div>
