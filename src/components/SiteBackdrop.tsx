@@ -113,8 +113,11 @@ export default function SiteBackdrop() {
           />
         ))}
 
-        {/* The idea itself, sitting at the centre of every ring. */}
-        <span className="pulse-dot absolute top-1/2 left-1/2 h-3 w-3 rounded-full bg-ted shadow-[0_0_70px_20px_rgba(235,0,40,0.3)]" />
+        {/*
+          No dot at the centre. Pinned to the middle of the viewport it read as
+          a stray mark sitting on top of the content rather than as the source
+          of the rings. The rings carry the idea on their own.
+        */}
       </div>
 
       {/*

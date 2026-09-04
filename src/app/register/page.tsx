@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import Footer from "@/components/Footer";
 import RegisterForm from "@/components/RegisterForm";
 import SiteBackdrop from "@/components/SiteBackdrop";
 import { event } from "@/config/event";
@@ -118,11 +119,9 @@ export default async function RegisterPage() {
         </div>
       </main>
 
-      <footer className="relative z-10 border-t border-line px-5 py-10 text-center sm:px-6">
-        <p className="text-xs leading-relaxed text-muted">
-          This independent TEDx event is operated under license from TED.
-        </p>
-      </footer>
+      <div className="relative z-10">
+        <Footer />
+      </div>
     </>
   );
 }

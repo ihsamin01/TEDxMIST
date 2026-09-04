@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { event, navLinks, socials } from "@/config/event";
 
 /** Icon paths, keyed to match the fields in `socials`. */
@@ -79,20 +80,20 @@ export default function Footer() {
         {/* Navigation */}
         <nav className="mt-12 flex flex-wrap items-center justify-center gap-x-7 gap-y-3">
           {navLinks.map((link) => (
-            <a
+            <Link
               key={link.href}
-              href={link.href}
+              href={`/${link.href}`}
               className="text-sm font-semibold text-white/70 transition-colors hover:text-ted"
             >
               {link.label}
-            </a>
+            </Link>
           ))}
-          <a
-            href="#register"
+          <Link
+            href="/register"
             className="text-sm font-semibold text-white/70 transition-colors hover:text-ted"
           >
             Register
-          </a>
+          </Link>
         </nav>
 
         {/* Contact */}

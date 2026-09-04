@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import StatusSelect from "@/components/admin/StatusSelect";
 import LoginForm from "@/components/admin/LoginForm";
+import Footer from "@/components/Footer";
 import RegistrationSwitch from "@/components/admin/RegistrationSwitch";
 import { registration } from "@/config/event";
 import { isAdminConfigured, isSignedIn } from "@/lib/admin-auth";
@@ -368,6 +369,10 @@ export default async function AdminPage({
       </div>
 
       <RegistrationSwitch open={signUpsOpen} />
+
+      <div className="mt-16">
+        <Footer />
+      </div>
     </main>
   );
 }
