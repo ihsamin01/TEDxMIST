@@ -1,7 +1,12 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
-import { about, event, siteUrl } from "@/config/event";
+import {
+  about,
+  event,
+  googleSiteVerification,
+  siteUrl,
+} from "@/config/event";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -15,6 +20,10 @@ export const metadata: Metadata = {
   /** Makes every relative URL in the tags below absolute. */
   metadataBase: new URL(siteUrl),
   alternates: { canonical: "/" },
+  // Omitted entirely until the token is filled in, so no empty tag is written.
+  ...(googleSiteVerification
+    ? { verification: { google: googleSiteVerification } }
+    : {}),
   title: {
     default: `${event.name}: ${event.theme}`,
     template: `%s | ${event.name}`,

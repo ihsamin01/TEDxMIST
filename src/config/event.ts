@@ -29,6 +29,13 @@
  */
 export const siteUrl = "https://tedxmist.vercel.app";
 
+/**
+ * The token Google Search Console gives you under "HTML tag" verification.
+ * Paste just the content value, not the whole tag. Left empty, no
+ * verification tag is written at all.
+ */
+export const googleSiteVerification = "";
+
 export const event: {
   name: string;
   theme: string;
