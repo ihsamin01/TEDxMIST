@@ -1,8 +1,9 @@
 import Link from "next/link";
-import { event, navLinks, socials } from "@/config/event";
+import { about, event, navLinks, socials } from "@/config/event";
 
-/** Icon paths, keyed to match the fields in `socials`. */
-const ICONS: Record<string, string> = {
+/* Brand marks for the social row. */
+
+const SOCIAL_ICONS: Record<string, string> = {
   facebook:
     "M14 9h3V6h-3a4 4 0 0 0-4 4v2H8v3h2v7h3v-7h3l1-3h-4v-2a1 1 0 0 1 1-1Z",
   instagram:
@@ -13,34 +14,98 @@ const ICONS: Record<string, string> = {
     "M21.5 8.4a2.6 2.6 0 0 0-1.8-1.85C18.1 6.1 12 6.1 12 6.1s-6.1 0-7.7.45A2.6 2.6 0 0 0 2.5 8.4 27 27 0 0 0 2.05 12c0 1.25.15 2.45.45 3.6a2.6 2.6 0 0 0 1.8 1.85c1.6.45 7.7.45 7.7.45s6.1 0 7.7-.45a2.6 2.6 0 0 0 1.8-1.85c.3-1.15.45-2.35.45-3.6s-.15-2.45-.45-3.6ZM10.2 14.9V9.1l5 2.9-5 2.9Z",
 };
 
-const LABELS: Record<string, string> = {
+const SOCIAL_LABELS: Record<string, string> = {
   facebook: "Facebook",
   instagram: "Instagram",
   linkedin: "LinkedIn",
   youtube: "YouTube",
 };
 
-function SocialLinks() {
-  // Only the platforms that actually have a URL filled in.
-  const active = (Object.keys(ICONS) as Array<keyof typeof socials>).filter(
-    (key) => socials[key],
+/* Small line-art marks beside each contact detail. */
+
+const iconClass = "h-4 w-4 shrink-0 text-ted";
+
+function MailIcon() {
+  return (
+    <svg
+      aria-hidden
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.75"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      className={iconClass}
+    >
+      <rect x="3" y="5" width="18" height="14" rx="2" />
+      <path d="m3 7 9 6 9-6" />
+    </svg>
   );
+}
+
+function PhoneIcon() {
+  return (
+    <svg
+      aria-hidden
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.75"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      className={iconClass}
+    >
+      <path d="M6 3h3l2 5-2.5 1.5a12 12 0 0 0 5 5L15 12l5 2v3a2 2 0 0 1-2.2 2A16 16 0 0 1 4 5.2 2 2 0 0 1 6 3Z" />
+    </svg>
+  );
+}
+
+function PinIcon() {
+  return (
+    <svg
+      aria-hidden
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.75"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      className={iconClass}
+    >
+      <path d="M12 21s7-5.5 7-11a7 7 0 1 0-14 0c0 5.5 7 11 7 11Z" />
+      <circle cx="12" cy="10" r="2.5" />
+    </svg>
+  );
+}
+
+function ColumnHeading({ children }: { children: React.ReactNode }) {
+  return (
+    <h2 className="mb-5 text-base font-bold tracking-tight text-white">
+      {children}
+    </h2>
+  );
+}
+
+function SocialLinks() {
+  const active = (
+    Object.keys(SOCIAL_ICONS) as Array<keyof typeof socials>
+  ).filter((key) => socials[key]);
 
   if (active.length === 0 && !socials.ted) return null;
 
   return (
-    <div className="flex flex-wrap items-center justify-center gap-3">
+    <div className="flex flex-wrap items-center gap-3">
       {active.map((key) => (
         <a
           key={key}
           href={socials[key]}
           target="_blank"
           rel="noopener noreferrer"
-          aria-label={LABELS[key]}
-          className="flex h-11 w-11 items-center justify-center rounded-full border border-line text-white/70 transition hover:-translate-y-0.5 hover:border-ted hover:text-ted"
+          aria-label={SOCIAL_LABELS[key]}
+          className="flex h-10 w-10 items-center justify-center rounded-full border border-line bg-ink-soft text-white/80 transition hover:-translate-y-0.5 hover:border-ted hover:text-ted"
         >
           <svg viewBox="0 0 24 24" fill="currentColor" className="h-5 w-5">
-            <path d={ICONS[key]} />
+            <path d={SOCIAL_ICONS[key]} />
           </svg>
         </a>
       ))}
@@ -50,7 +115,8 @@ function SocialLinks() {
           href={socials.ted}
           target="_blank"
           rel="noopener noreferrer"
-          className="flex h-11 items-center rounded-full border border-line px-5 text-sm font-bold tracking-tight text-white/70 transition hover:-translate-y-0.5 hover:border-ted hover:text-ted"
+          aria-label="This event on TED.com"
+          className="flex h-10 items-center rounded-full border border-line bg-ink-soft px-4 text-xs font-bold tracking-tight text-white/80 transition hover:-translate-y-0.5 hover:border-ted hover:text-ted"
         >
           TED.com
         </a>
@@ -61,86 +127,101 @@ function SocialLinks() {
 
 export default function Footer() {
   return (
-    <footer className="border-t border-line px-5 py-16 text-center sm:px-6 md:py-20">
-      <div className="mx-auto max-w-4xl">
-        {/* Identity */}
-        <p className="text-3xl font-black tracking-tight md:text-4xl">
-          <span className="text-ted">TEDx</span>
-          <span className="text-white">MIST</span>
-        </p>
-
-        <p className="mx-auto mt-4 max-w-md leading-relaxed text-balance text-muted">
-          {event.theme}. {event.dateLabel} at {event.venue.short}.
-        </p>
-
-        <div className="mt-8">
-          <SocialLinks />
-        </div>
-
-        {/* Navigation */}
-        <nav className="mt-12 flex flex-wrap items-center justify-center gap-x-7 gap-y-3">
-          {navLinks.map((link) => (
-            <Link
-              key={link.href}
-              href={`/${link.href}`}
-              className="text-sm font-semibold text-white/70 transition-colors hover:text-ted"
-            >
-              {link.label}
-            </Link>
-          ))}
-          <Link
-            href="/register"
-            className="text-sm font-semibold text-white/70 transition-colors hover:text-ted"
-          >
-            Register
-          </Link>
-        </nav>
-
-        {/* Contact */}
-        <div className="mt-12 flex flex-col items-center gap-2.5 text-sm text-muted">
-          <a
-            href={`mailto:${event.contact.email}`}
-            className="transition-colors hover:text-ted"
-          >
-            {event.contact.email}
-          </a>
-
-          {event.contact.phone && (
-            <a
-              href={`tel:${event.contact.phone.replace(/\s/g, "")}`}
-              className="transition-colors hover:text-ted"
-            >
-              {event.contact.phone}
-            </a>
-          )}
-
-          <p className="max-w-xs leading-relaxed text-balance">
-            {event.venue.address}
-          </p>
-
-          <a
-            href={event.venue.mapUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="font-semibold text-ted transition-opacity hover:opacity-75"
-          >
-            View on map
-          </a>
-        </div>
-
-        {/* Legal — the disclaimer TED requires on every TEDx event site. */}
-        <div className="mt-14 border-t border-line pt-8">
-          <p className="mx-auto max-w-2xl text-sm leading-relaxed text-balance text-muted">
-            This independent TEDx event is operated under license from TED.
-          </p>
-
-          <div className="mt-4 flex flex-col items-center gap-2 text-xs text-muted sm:text-sm">
-            <p className="text-balance">
-              © {new Date().getFullYear()} {event.name}. Organized by{" "}
-              {event.organizer.name}.
+    <footer className="border-t border-line px-5 pt-14 pb-10 sm:px-6 md:pt-16">
+      <div className="mx-auto max-w-6xl">
+        <div className="grid gap-12 md:grid-cols-[1.6fr_1fr_1.2fr] md:gap-10">
+          {/* Who we are */}
+          <div>
+            <p className="text-3xl font-black tracking-tight">
+              <span className="text-ted">TEDx</span>
+              <span className="text-white">MIST</span>
             </p>
-            <p>x = independently organized TED event</p>
+
+            <p className="mt-4 max-w-sm text-sm leading-relaxed text-muted">
+              {about.footerBlurb}
+            </p>
+
+            <div className="mt-7">
+              <SocialLinks />
+            </div>
           </div>
+
+          {/* Where to go */}
+          <nav>
+            <ColumnHeading>Quick Links</ColumnHeading>
+
+            <ul className="space-y-3.5">
+              {navLinks.map((link) => (
+                <li key={link.href}>
+                  <Link
+                    href={`/${link.href}`}
+                    className="text-sm text-muted transition-colors hover:text-ted"
+                  >
+                    {link.label}
+                  </Link>
+                </li>
+              ))}
+              <li>
+                <Link
+                  href="/register"
+                  className="text-sm text-muted transition-colors hover:text-ted"
+                >
+                  Register
+                </Link>
+              </li>
+            </ul>
+          </nav>
+
+          {/* How to reach us */}
+          <div>
+            <ColumnHeading>Contact Information</ColumnHeading>
+
+            <ul className="space-y-3.5 text-sm text-muted">
+              <li className="flex items-start gap-3">
+                <MailIcon />
+                <a
+                  href={`mailto:${event.contact.email}`}
+                  className="transition-colors hover:text-ted"
+                >
+                  {event.contact.email}
+                </a>
+              </li>
+
+              {event.contact.phone && (
+                <li className="flex items-start gap-3">
+                  <PhoneIcon />
+                  <a
+                    href={`tel:${event.contact.phone.replace(/\s/g, "")}`}
+                    className="transition-colors hover:text-ted"
+                  >
+                    {event.contact.phone}
+                  </a>
+                </li>
+              )}
+
+              <li className="flex items-start gap-3">
+                <PinIcon />
+                <a
+                  href={event.venue.mapUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="leading-relaxed transition-colors hover:text-ted"
+                >
+                  {event.venue.hall}
+                  <br />
+                  {event.venue.address}
+                </a>
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        {/* The line TED requires on every TEDx event site. */}
+        <div className="mt-14 border-t border-line pt-8">
+          <p className="text-center text-sm text-muted">
+            © {new Date().getFullYear()} {event.name}. This independent TEDx
+            event is operated under license from TED.
+          </p>
         </div>
       </div>
     </footer>

@@ -11,7 +11,6 @@ import ScrollProgress from "@/components/ScrollProgress";
 import SiteBackdrop from "@/components/SiteBackdrop";
 import Speakers from "@/components/Speakers";
 import Stats from "@/components/Stats";
-import Team from "@/components/Team";
 import { isRegistrationOpen } from "@/lib/settings";
 
 /** The open/closed switch is read fresh, so flipping it shows up at once. */
@@ -36,7 +35,6 @@ export default async function Home() {
         <Stats />
         <Schedule />
         <Register open={open} />
-        <Team />
       </main>
 
       <div className="relative z-10">

@@ -176,6 +176,10 @@ export function feeFor(university: string): number {
  * ------------------------------------------------------------------------ */
 
 export const about = {
+  /** The short paragraph under the wordmark in the footer. */
+  footerBlurb:
+    "TEDxMIST is an independently organized TED event, bringing engineers, researchers, artists and storytellers to one stage at MIST to share ideas worth spreading.",
+
   /** The line the About section leads with, set in large type. */
   headline: "An echo is a sound that took the long way back.",
 
@@ -309,32 +313,6 @@ export const schedule: Slot[] = [
 ];
 
 /* ---------------------------------------------------------------------------
- * 6. ORGANIZING TEAM
- * ------------------------------------------------------------------------ */
-
-export type Member = {
-  name: string;
-  role: string;
-  photo?: string;
-};
-
-export const team: Member[] = [
-  {
-    name: "Isbatul Haque Samin",
-    role: "Licensee & Lead Organizer",
-  },
-  {
-    name: "Jannat Mustary Bushra",
-    role: "Co-organizer",
-  },
-  { name: "Team Member", role: "Curation" },
-  { name: "Team Member", role: "Sponsorship" },
-  { name: "Team Member", role: "Design & Branding" },
-  { name: "Team Member", role: "Logistics" },
-  { name: "Team Member", role: "Communications" },
-];
-
-/* ---------------------------------------------------------------------------
  * 7. SOCIAL LINKS
  * ------------------------------------------------------------------------ */
 
@@ -362,7 +340,6 @@ export const navLinks = [
   { label: "About", href: "#about" },
   { label: "Speakers", href: "#speakers" },
   { label: "Schedule", href: "#schedule" },
-  { label: "Team", href: "#team" },
 ] as const;
 
 /* ---------------------------------------------------------------------------
