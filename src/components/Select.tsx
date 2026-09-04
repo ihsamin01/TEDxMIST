@@ -190,13 +190,18 @@ export default function Select({
         aria-expanded={open}
         aria-controls={open ? listId : undefined}
         aria-describedby={describedBy}
-        className={`flex w-full items-center justify-between gap-3 rounded-xl border px-4 py-3 text-left text-[0.95rem] transition outline-none focus-visible:border-ted focus-visible:ring-2 focus-visible:ring-ted/30 ${
+        className={`flex w-full items-center justify-between gap-3 overflow-hidden rounded-xl border px-4 py-3 text-left text-[0.95rem] transition outline-none focus-visible:border-ted focus-visible:ring-2 focus-visible:ring-ted/30 ${
           invalid ? "border-ted" : "border-line hover:border-white/25"
         } ${open ? "border-ted bg-ink-soft" : "bg-ink-soft"} ${
           value ? "text-white" : "text-muted/60"
         }`}
       >
-        <span className="truncate">{value || placeholder}</span>
+        {/*
+          min-w-0 matters: a flex item will not shrink below its content
+          width without it, so a long university name pushed the button wider
+          than the page and took the whole layout sideways with it.
+        */}
+        <span className="min-w-0 truncate">{value || placeholder}</span>
 
         <svg
           aria-hidden

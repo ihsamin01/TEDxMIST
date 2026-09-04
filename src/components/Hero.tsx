@@ -30,18 +30,20 @@ export default function Hero({ open }: { open: boolean }) {
           {event.theme}
         </p>
 
-        {/* Event name — "TEDx" solid, the campus name outlined underneath. */}
-        <h1 className="leading-[0.82] font-black tracking-tighter">
-          <span
-            className="rise-in block text-[clamp(3.4rem,17vw,10rem)] text-ted"
-            style={{ animationDelay: "0.2s" }}
-          >
+        {/*
+          One line, always. Two stacked lines read as a broken wordmark on a
+          narrow screen, and the mark is the one thing on the page that has to
+          look deliberate. The size is chosen so all eight characters fit
+          across the smallest phone without wrapping.
+        */}
+        <h1
+          className="rise-in leading-[0.9] font-black tracking-tighter whitespace-nowrap"
+          style={{ animationDelay: "0.2s" }}
+        >
+          <span className="text-[clamp(2.2rem,13.5vw,8.5rem)] text-ted">
             TEDx
           </span>
-          <span
-            className="rise-in text-outline block text-[clamp(3.4rem,17vw,10rem)]"
-            style={{ animationDelay: "0.32s" }}
-          >
+          <span className="text-outline text-[clamp(2.2rem,13.5vw,8.5rem)]">
             {suffix}
           </span>
         </h1>
@@ -93,10 +95,7 @@ export default function Hero({ open }: { open: boolean }) {
 
       <ScrollCue />
 
-      {/* The line TED requires everywhere the brand appears. */}
-      <p className="absolute inset-x-0 bottom-4 px-5 text-center text-[0.6rem] tracking-wide text-muted sm:text-[0.65rem]">
-        x = independently organized TED event
-      </p>
+
     </section>
   );
 }

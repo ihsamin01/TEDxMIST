@@ -32,13 +32,19 @@ html {
   color-scheme: dark;
 }
 
+/* Neither element may scroll sideways. Setting this on body alone is not
+   enough: the viewport takes its scrolling behaviour from html. */
+html,
+body {
+  overflow-x: clip;
+  max-width: 100%;
+}
+
 body {
   background: var(--color-ink);
   color: #ffffff;
   font-family: var(--font-sans);
   -webkit-font-smoothing: antialiased;
-  /* Nothing on the page is allowed to cause sideways scrolling. */
-  overflow-x: hidden;
 }
 
 ::selection {
