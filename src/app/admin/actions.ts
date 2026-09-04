@@ -111,3 +111,40 @@ export async function resendConfirmation(id: string): Promise<StatusResult> {
   revalidatePath("/admin");
   return { ok: true, emailed: true };
 }
+
+/**
+ * Opens or closes registration for the whole site.
+ *
+ * Every page that shows the countdown or a "Reserve your seat" button reads
+ * this, so all three paths are revalidated: flipping the switch has to take
+ * effect on the landing page immediately, not whenever a cache happens to
+ * expire.
+ */
+export type SwitchResult = { ok: boolean; message: string };
+
+export async function setRegistrationOpen(
+  open: boolean,
+): Promise<SwitchResult> {
+  if (!(await isSignedIn())) throw new Error("Unauthorized");
+
+  const { error } = await supabase()
+    .from("settings")
+    .update({ registration_open: open, updated_at: new Date().toISOString() })
+    .eq("id", true);
+
+  if (error) {
+    return {
+      ok: false,
+      message: `Could not change that: ${error.message}`,
+    };
+  }
+
+  revalidatePath("/");
+  revalidatePath("/register");
+  revalidatePath("/admin");
+
+  return {
+    ok: true,
+    message: open ? "Registration is open." : "Registration is closed.",
+  };
+}

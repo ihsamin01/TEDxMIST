@@ -8,7 +8,7 @@ import { useActiveSection } from "@/hooks/useScrollUi";
 /** Section ids the nav tracks, derived from the links themselves. */
 const SECTION_IDS = navLinks.map((link) => link.href.slice(1));
 
-export default function Nav() {
+export default function Nav({ open }: { open: boolean }) {
   /** Transparent over the hero, solid once you start scrolling. */
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
@@ -82,7 +82,7 @@ export default function Nav() {
               </a>
             );
           })}
-          <RegisterButton />
+          <RegisterButton open={open} />
         </div>
 
         {/* Mobile toggle */}
@@ -132,7 +132,7 @@ export default function Nav() {
             </a>
           ))}
           <div className="mt-4 w-full max-w-xs">
-            <RegisterButton className="w-full" />
+            <RegisterButton open={open} className="w-full" />
           </div>
         </div>
       </div>

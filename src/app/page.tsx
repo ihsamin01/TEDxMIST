@@ -1,4 +1,5 @@
 import About from "@/components/About";
+import ClosedToast from "@/components/ClosedToast";
 import BackToTop from "@/components/BackToTop";
 import Footer from "@/components/Footer";
 import Hero from "@/components/Hero";
@@ -11,24 +12,30 @@ import SiteBackdrop from "@/components/SiteBackdrop";
 import Speakers from "@/components/Speakers";
 import Stats from "@/components/Stats";
 import Team from "@/components/Team";
+import { isRegistrationOpen } from "@/lib/settings";
 
-export default function Home() {
+/** The open/closed switch is read fresh, so flipping it shows up at once. */
+export const dynamic = "force-dynamic";
+
+export default async function Home() {
+  const open = await isRegistrationOpen();
+
   return (
     <>
       <SiteBackdrop />
 
       <ScrollProgress />
-      <Nav />
+      <Nav open={open} />
 
       {/* Sits above the fixed backdrop rather than being painted over by it. */}
       <main id="top" className="relative z-10">
-        <Hero />
+        <Hero open={open} />
         <Marquee />
         <About />
         <Speakers />
         <Stats />
         <Schedule />
-        <Register />
+        <Register open={open} />
         <Team />
       </main>
 
@@ -36,6 +43,7 @@ export default function Home() {
         <Footer />
       </div>
       <BackToTop />
+      <ClosedToast />
     </>
   );
 }

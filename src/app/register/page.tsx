@@ -2,7 +2,8 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import RegisterForm from "@/components/RegisterForm";
 import SiteBackdrop from "@/components/SiteBackdrop";
-import { event, registration } from "@/config/event";
+import { event } from "@/config/event";
+import { isRegistrationOpen } from "@/lib/settings";
 import { isSupabaseConfigured } from "@/lib/supabase";
 import { seatsLeft } from "./actions";
 
@@ -55,7 +56,8 @@ function Notice({ title, body }: { title: string; body: string }) {
 }
 
 export default async function RegisterPage() {
-  const remaining = registration.isOpen ? await seatsLeft() : null;
+  const open = await isRegistrationOpen();
+  const remaining = open ? await seatsLeft() : null;
   const soldOut = remaining === 0;
 
   return (
@@ -94,7 +96,7 @@ export default async function RegisterPage() {
           )}
 
           <div className="mt-14">
-            {!registration.isOpen ? (
+            {!open ? (
               <Notice
                 title="Registration is closed"
                 body={`Sign-ups for ${event.name} are no longer open. Follow us on social media for the next event.`}

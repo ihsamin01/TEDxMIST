@@ -2,7 +2,7 @@ import RegisterButton from "./RegisterButton";
 import Reveal from "./Reveal";
 import { registration } from "@/config/event";
 
-export default function Register() {
+export default function Register({ open }: { open: boolean }) {
   return (
     <section
       id="register"
@@ -30,7 +30,7 @@ export default function Register() {
         </p>
 
         <div className="mt-10 flex justify-center">
-          <RegisterButton size="lg" />
+          <RegisterButton open={open} size="lg" />
         </div>
 
         <p className="mt-6 text-xs text-balance text-muted sm:text-sm">

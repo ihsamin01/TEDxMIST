@@ -16,7 +16,7 @@ function Meta({ label, value }: { label: string; value: string }) {
   );
 }
 
-export default function Hero() {
+export default function Hero({ open }: { open: boolean }) {
   const suffix = event.name.replace(/^TEDx/, "");
 
   return (
@@ -69,10 +69,14 @@ export default function Hero() {
           className="rise-in mt-10 w-full sm:mt-12"
           style={{ animationDelay: "0.64s" }}
         >
-          <p className="mb-4 text-[0.55rem] font-bold tracking-[0.2em] text-muted uppercase sm:text-[0.65rem]">
-            Counting down to the stage
+          <p
+            className={`mb-4 text-[0.55rem] font-bold tracking-[0.2em] uppercase sm:text-[0.65rem] ${
+              open ? "text-muted" : "text-ted"
+            }`}
+          >
+            {open ? "Counting down to the stage" : "Registration closed"}
           </p>
-          <Countdown />
+          <Countdown frozen={!open} />
         </div>
 
         {/* Call to action */}
@@ -80,7 +84,7 @@ export default function Hero() {
           className="rise-in mt-10 flex flex-col items-center gap-4 sm:mt-12"
           style={{ animationDelay: "0.74s" }}
         >
-          <RegisterButton size="lg" />
+          <RegisterButton open={open} size="lg" />
           <p className="max-w-xs text-xs leading-snug text-balance text-muted sm:text-sm">
             {registration.note}
           </p>

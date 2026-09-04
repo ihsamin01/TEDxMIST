@@ -2,8 +2,10 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import StatusSelect from "@/components/admin/StatusSelect";
 import LoginForm from "@/components/admin/LoginForm";
+import RegistrationSwitch from "@/components/admin/RegistrationSwitch";
 import { registration } from "@/config/event";
 import { isAdminConfigured, isSignedIn } from "@/lib/admin-auth";
+import { isRegistrationOpen } from "@/lib/settings";
 import { isEmailConfigured, ticketCode } from "@/lib/email";
 import { isSupabaseConfigured, supabase } from "@/lib/supabase";
 import type { Registration } from "@/lib/supabase";
@@ -145,6 +147,8 @@ export default async function AdminPage({
 
   const confirmed = rows.filter((r) => r.status === "confirmed").length;
   const pending = rows.filter((r) => r.status === "pending").length;
+
+  const signUpsOpen = await isRegistrationOpen();
 
   return (
     <main className="mx-auto max-w-[110rem] px-5 py-10 sm:px-8">
@@ -362,6 +366,8 @@ export default async function AdminPage({
           </p>
         )}
       </div>
+
+      <RegistrationSwitch open={signUpsOpen} />
     </main>
   );
 }

@@ -2,6 +2,7 @@
 
 import { event, feeFor, registration } from "@/config/event";
 import { OTHER_UNIVERSITY, universities } from "@/config/universities";
+import { isRegistrationOpen } from "@/lib/settings";
 import { supabase } from "@/lib/supabase";
 import {
   EMAIL_MESSAGE,
@@ -69,7 +70,7 @@ export async function register(
   _prev: FormState,
   formData: FormData,
 ): Promise<FormState> {
-  if (!registration.isOpen) {
+  if (!(await isRegistrationOpen())) {
     return { ok: false, message: "Registration is closed.", errors: {} };
   }
 

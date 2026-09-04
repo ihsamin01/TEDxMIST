@@ -56,12 +56,34 @@ function Unit({
   );
 }
 
-export default function Countdown() {
+type Props = {
+  /**
+   * Stops the clock and shows zeros. Used when registration has closed, so
+   * the hero reads as shut rather than still counting people in.
+   */
+  frozen?: boolean;
+};
+
+export default function Countdown({ frozen = false }: Props) {
   const totalSeconds = useSyncExternalStore(
     subscribe,
     getSnapshot,
     getServerSnapshot,
   );
+
+  if (frozen) {
+    return (
+      <div
+        className="mx-auto grid w-full max-w-lg grid-cols-4 gap-1.5 opacity-60 sm:gap-3"
+        role="timer"
+        aria-label="Registration is closed"
+      >
+        {["Days", "Hours", "Minutes", "Seconds"].map((label) => (
+          <Unit key={label} value={0} label={label} />
+        ))}
+      </div>
+    );
+  }
 
   if (totalSeconds === 0) {
     return (
