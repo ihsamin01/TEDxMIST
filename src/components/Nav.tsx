@@ -95,7 +95,7 @@ export default function Nav({ open }: { open: boolean }) {
           : "border-b border-transparent"
       }`}
     >
-      <nav className="mx-auto flex h-16 max-w-6xl items-center justify-between px-5 pr-16 sm:px-6 sm:pr-20 md:h-20">
+      <nav className="mx-auto flex h-16 max-w-6xl items-center justify-between pl-5 pr-20 sm:pl-6 sm:pr-20 md:h-20 xl:pr-6">
         <a
           href="#top"
           className="text-xl font-black tracking-tight whitespace-nowrap md:text-2xl"
@@ -162,8 +162,12 @@ export default function Nav({ open }: { open: boolean }) {
       {/*
         Pinned to the corner of the window rather than placed in the row. The
         row is a centred column with a maximum width, so anything inside it
-        stops well short of the edge on a wide screen. The nav reserves right
-        padding to match, and nothing ever sits underneath this.
+        stops well short of the edge on a wide screen.
+
+        From 1280px up the row already ends far enough left that the mark has
+        the corner to itself, so the row keeps its normal padding and nothing
+        moves. Below that the two would overlap, so the row gives up some
+        room on the right.
       */}
       <div className="absolute top-0 right-4 flex h-16 items-center sm:right-6 md:h-20">
         <FacebookMark />
