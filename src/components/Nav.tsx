@@ -9,24 +9,29 @@ const FACEBOOK_PATH =
   "M14 9h3V6h-3a4 4 0 0 0-4 4v2H8v3h2v7h3v-7h3l1-3h-4v-2a1 1 0 0 1 1-1Z";
 
 /**
- * The Facebook mark in the top bar.
+ * The Facebook mark, sitting at the far right of the top bar.
  *
  * Rendered whether or not the page exists yet. With no URL in
  * config/event.ts it is a dimmed, unclickable mark that says so on hover;
  * paste the link in and it becomes a real link with no other change. A dead
  * link would be worse than a quiet one.
+ *
+ * The hover fill is Facebook's own blue rather than TED red. Brand marks are
+ * the one place a foreign colour belongs: the point of the icon is to be
+ * recognised instantly, and red would fight that.
  */
-function FacebookMark({ className = "" }: { className?: string }) {
-  const shape = `flex h-9 w-9 items-center justify-center rounded-full border transition ${className}`;
+function FacebookMark() {
+  const shape =
+    "flex h-11 w-11 shrink-0 items-center justify-center rounded-full border transition duration-200";
 
   if (!socials.facebook) {
     return (
       <span
         aria-hidden
         title="Facebook page coming soon"
-        className={`${shape} cursor-default border-line text-muted/50`}
+        className={`${shape} cursor-default border-line text-muted/40`}
       >
-        <svg viewBox="0 0 24 24" fill="currentColor" className="h-4 w-4">
+        <svg viewBox="0 0 24 24" fill="currentColor" className="h-5 w-5">
           <path d={FACEBOOK_PATH} />
         </svg>
       </span>
@@ -39,9 +44,9 @@ function FacebookMark({ className = "" }: { className?: string }) {
       target="_blank"
       rel="noopener noreferrer"
       aria-label="TEDxMIST on Facebook"
-      className={`${shape} border-line text-white/80 hover:-translate-y-0.5 hover:border-ted hover:text-ted`}
+      className={`${shape} border-line text-white/80 hover:-translate-y-0.5 hover:border-[#1877F2] hover:bg-[#1877F2] hover:text-white hover:shadow-[0_8px_24px_-8px_rgba(24,119,242,0.7)]`}
     >
-      <svg viewBox="0 0 24 24" fill="currentColor" className="h-4 w-4">
+      <svg viewBox="0 0 24 24" fill="currentColor" className="h-5 w-5">
         <path d={FACEBOOK_PATH} />
       </svg>
     </a>
@@ -125,32 +130,36 @@ export default function Nav({ open }: { open: boolean }) {
               </a>
             );
           })}
-          <FacebookMark />
           <RegisterButton open={open} />
+          <FacebookMark />
         </div>
 
-        {/* Mobile toggle */}
-        <button
-          type="button"
-          onClick={() => setMenuOpen((open) => !open)}
-          aria-expanded={menuOpen}
-          aria-controls="mobile-menu"
-          aria-label={menuOpen ? "Close menu" : "Open menu"}
-          className="-mr-2 flex h-11 w-11 items-center justify-center md:hidden"
-        >
-          <span className="relative block h-4 w-6">
-            <span
-              className={`absolute left-0 block h-0.5 w-6 bg-white transition-all duration-300 ${
-                menuOpen ? "top-1/2 rotate-45" : "top-0"
-              }`}
-            />
-            <span
-              className={`absolute left-0 block h-0.5 w-6 bg-white transition-all duration-300 ${
-                menuOpen ? "top-1/2 -rotate-45" : "top-full"
-              }`}
-            />
-          </span>
-        </button>
+        {/* Mobile: the mark sits next to the toggle, still top right. */}
+        <div className="flex items-center gap-1 md:hidden">
+          <FacebookMark />
+
+          <button
+            type="button"
+            onClick={() => setMenuOpen((open) => !open)}
+            aria-expanded={menuOpen}
+            aria-controls="mobile-menu"
+            aria-label={menuOpen ? "Close menu" : "Open menu"}
+            className="-mr-2 flex h-11 w-11 items-center justify-center"
+          >
+            <span className="relative block h-4 w-6">
+              <span
+                className={`absolute left-0 block h-0.5 w-6 bg-white transition-all duration-300 ${
+                  menuOpen ? "top-1/2 rotate-45" : "top-0"
+                }`}
+              />
+              <span
+                className={`absolute left-0 block h-0.5 w-6 bg-white transition-all duration-300 ${
+                  menuOpen ? "top-1/2 -rotate-45" : "top-full"
+                }`}
+              />
+            </span>
+          </button>
+        </div>
       </nav>
 
       {/* Mobile drawer */}
@@ -175,9 +184,8 @@ export default function Nav({ open }: { open: boolean }) {
               {link.label}
             </a>
           ))}
-          <div className="mt-4 flex w-full max-w-xs flex-col items-center gap-4">
+          <div className="mt-4 w-full max-w-xs">
             <RegisterButton open={open} className="w-full" />
-            <FacebookMark />
           </div>
         </div>
       </div>
