@@ -256,6 +256,14 @@ export const speakers: Speaker[] = [
     title: "Job title, Organization",
     topic: "The title of their talk goes here",
     bio: "Two or three sentences about who they are and why this audience should listen to them. Keep every bio roughly the same length so the cards line up neatly.",
+
+    // The photo line goes here, once you have one. Put the file in
+    // public/speakers/ and write the path with a leading slash and no
+    // "public", like this:
+    //
+    //   photo: "/speakers/speaker-one.jpg",
+    //
+    // Leave it out entirely and the card shows their initials instead.
   },
   {
     name: "Speaker Two",
