@@ -129,7 +129,7 @@ export default function Footer() {
   return (
     <footer className="border-t border-line px-5 pt-14 pb-10 sm:px-6 md:pt-16">
       <div className="mx-auto max-w-6xl">
-        <div className="grid gap-12 md:grid-cols-[1.6fr_1fr_1.2fr] md:gap-10">
+        <div className="grid gap-12 sm:grid-cols-2 md:grid-cols-[1.5fr_0.8fr_0.8fr_1.2fr] md:gap-10">
           {/* Who we are */}
           <div>
             <p className="text-3xl font-black tracking-tight">
@@ -167,6 +167,22 @@ export default function Footer() {
                   className="text-sm text-muted transition-colors hover:text-ted"
                 >
                   Register
+                </Link>
+              </li>
+            </ul>
+          </nav>
+
+          {/* The small print */}
+          <nav>
+            <ColumnHeading>Legal</ColumnHeading>
+
+            <ul className="space-y-3.5">
+              <li>
+                <Link
+                  href="/refund-policy"
+                  className="text-sm text-muted transition-colors hover:text-ted"
+                >
+                  Refund Policy
                 </Link>
               </li>
             </ul>

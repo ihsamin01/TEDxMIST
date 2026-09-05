@@ -188,6 +188,25 @@ export function feeFor(university: string): number {
 }
 
 /* ---------------------------------------------------------------------------
+ * 2b. REFUND POLICY
+ * ------------------------------------------------------------------------ */
+
+export const refundPolicy: {
+  lastUpdated: string;
+  requestWindowDays: number;
+  processingDays: number;
+} = {
+  /** Printed at the top of /refund-policy. Update it when the terms change. */
+  lastUpdated: "September 2026",
+
+  /** How long after paying somebody has to raise a refund claim. */
+  requestWindowDays: 7,
+
+  /** How long we take to send an approved refund back. */
+  processingDays: 10,
+};
+
+/* ---------------------------------------------------------------------------
  * 3. ABOUT COPY
  * ------------------------------------------------------------------------ */
 
