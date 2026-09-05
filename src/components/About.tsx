@@ -65,7 +65,9 @@ export default function About() {
 
       {/* The theme, given its own weight on the page. */}
       <Reveal delay={120}>
-        <figure className="relative isolate mt-12 overflow-hidden rounded-3xl border border-line bg-ink-soft px-6 py-14 text-center sm:px-12 md:mt-20 md:py-20">
+        <figure
+          id="theme"
+          className="scroll-mt-24 relative isolate mt-12 overflow-hidden rounded-3xl border border-line bg-ink-soft px-6 py-14 text-center sm:px-12 md:mt-20 md:py-20">
           {/* A red wash that keeps moving, so the block never sits still. */}
           <div
             aria-hidden

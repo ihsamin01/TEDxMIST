@@ -14,6 +14,14 @@ const SOCIAL_ICONS: Record<string, string> = {
     "M21.5 8.4a2.6 2.6 0 0 0-1.8-1.85C18.1 6.1 12 6.1 12 6.1s-6.1 0-7.7.45A2.6 2.6 0 0 0 2.5 8.4 27 27 0 0 0 2.05 12c0 1.25.15 2.45.45 3.6a2.6 2.6 0 0 0 1.8 1.85c1.6.45 7.7.45 7.7.45s6.1 0 7.7-.45a2.6 2.6 0 0 0 1.8-1.85c.3-1.15.45-2.35.45-3.6s-.15-2.45-.45-3.6ZM10.2 14.9V9.1l5 2.9-5 2.9Z",
 };
 
+/** The Legal column, in the order TEDx event sites usually list them. */
+const LEGAL_LINKS = [
+  { label: "About Us", href: "/about-us" },
+  { label: "Terms & Conditions", href: "/terms" },
+  { label: "Refund Policy", href: "/refund-policy" },
+  { label: "Privacy Policy", href: "/privacy" },
+];
+
 const SOCIAL_LABELS: Record<string, string> = {
   facebook: "Facebook",
   instagram: "Instagram",
@@ -177,14 +185,16 @@ export default function Footer() {
             <ColumnHeading>Legal</ColumnHeading>
 
             <ul className="space-y-3.5">
-              <li>
-                <Link
-                  href="/refund-policy"
-                  className="text-sm text-muted transition-colors hover:text-ted"
-                >
-                  Refund Policy
-                </Link>
-              </li>
+              {LEGAL_LINKS.map((link) => (
+                <li key={link.href}>
+                  <Link
+                    href={link.href}
+                    className="text-sm text-muted transition-colors hover:text-ted"
+                  >
+                    {link.label}
+                  </Link>
+                </li>
+              ))}
             </ul>
           </nav>
 

@@ -19,11 +19,11 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: "weekly",
       priority: 0.8,
     },
-    {
-      url: `${siteUrl}/refund-policy`,
+    ...["about-us", "terms", "refund-policy", "privacy"].map((path) => ({
+      url: `${siteUrl}/${path}`,
       lastModified: now,
-      changeFrequency: "yearly",
+      changeFrequency: "yearly" as const,
       priority: 0.3,
-    },
+    })),
   ];
 }

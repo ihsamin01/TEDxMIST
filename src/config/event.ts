@@ -99,7 +99,7 @@ export const event: {
   contact: {
     /** Shown in the footer, and used as reply-to on confirmation emails. */
     email: "tedximistuniversity@gmail.com",
-    phone: "",
+    phone: "+880 1827-724421",
   },
 };
 
@@ -372,7 +372,7 @@ export const socials: {
  * ------------------------------------------------------------------------ */
 
 export const navLinks = [
-  { label: "About", href: "#about" },
+  { label: "Theme", href: "#theme" },
   { label: "Speakers", href: "#speakers" },
   { label: "Schedule", href: "#schedule" },
 ] as const;
