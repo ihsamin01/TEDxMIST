@@ -95,7 +95,7 @@ export default function Nav({ open }: { open: boolean }) {
           : "border-b border-transparent"
       }`}
     >
-      <nav className="mx-auto flex h-16 max-w-6xl items-center justify-between px-5 sm:px-6 md:h-20">
+      <nav className="mx-auto flex h-16 max-w-6xl items-center justify-between px-5 pr-16 sm:px-6 sm:pr-20 md:h-20">
         <a
           href="#top"
           className="text-xl font-black tracking-tight whitespace-nowrap md:text-2xl"
@@ -131,13 +131,10 @@ export default function Nav({ open }: { open: boolean }) {
             );
           })}
           <RegisterButton open={open} />
-          <FacebookMark />
         </div>
 
-        {/* Mobile: the mark sits next to the toggle, still top right. */}
-        <div className="flex items-center gap-1 md:hidden">
-          <FacebookMark />
-
+        {/* Mobile toggle */}
+        <div className="md:hidden">
           <button
             type="button"
             onClick={() => setMenuOpen((open) => !open)}
@@ -161,6 +158,16 @@ export default function Nav({ open }: { open: boolean }) {
           </button>
         </div>
       </nav>
+
+      {/*
+        Pinned to the corner of the window rather than placed in the row. The
+        row is a centred column with a maximum width, so anything inside it
+        stops well short of the edge on a wide screen. The nav reserves right
+        padding to match, and nothing ever sits underneath this.
+      */}
+      <div className="absolute top-0 right-4 flex h-16 items-center sm:right-6 md:h-20">
+        <FacebookMark />
+      </div>
 
       {/* Mobile drawer */}
       <div
