@@ -43,10 +43,6 @@ export default function AboutUsPage() {
           {event.venue.name}. It is not run by, funded by, or speaking for the
           institute, and the views of our speakers are their own.
         </p>
-        <p>
-          {event.organizer.name} holds the licence and leads the organizing team.
-          Jannat Mustary Bushra is co-organizer.
-        </p>
       </LegalSection>
 
       <LegalSection n={4} title="Our licence">
