@@ -2,8 +2,51 @@
 
 import { useEffect, useState } from "react";
 import RegisterButton from "./RegisterButton";
-import { navLinks } from "@/config/event";
+import { navLinks, socials } from "@/config/event";
 import { useActiveSection } from "@/hooks/useScrollUi";
+
+const FACEBOOK_PATH =
+  "M14 9h3V6h-3a4 4 0 0 0-4 4v2H8v3h2v7h3v-7h3l1-3h-4v-2a1 1 0 0 1 1-1Z";
+
+/**
+ * The Facebook mark in the top bar.
+ *
+ * Rendered whether or not the page exists yet. With no URL in
+ * config/event.ts it is a dimmed, unclickable mark that says so on hover;
+ * paste the link in and it becomes a real link with no other change. A dead
+ * link would be worse than a quiet one.
+ */
+function FacebookMark({ className = "" }: { className?: string }) {
+  const shape = `flex h-9 w-9 items-center justify-center rounded-full border transition ${className}`;
+
+  if (!socials.facebook) {
+    return (
+      <span
+        aria-hidden
+        title="Facebook page coming soon"
+        className={`${shape} cursor-default border-line text-muted/50`}
+      >
+        <svg viewBox="0 0 24 24" fill="currentColor" className="h-4 w-4">
+          <path d={FACEBOOK_PATH} />
+        </svg>
+      </span>
+    );
+  }
+
+  return (
+    <a
+      href={socials.facebook}
+      target="_blank"
+      rel="noopener noreferrer"
+      aria-label="TEDxMIST on Facebook"
+      className={`${shape} border-line text-white/80 hover:-translate-y-0.5 hover:border-ted hover:text-ted`}
+    >
+      <svg viewBox="0 0 24 24" fill="currentColor" className="h-4 w-4">
+        <path d={FACEBOOK_PATH} />
+      </svg>
+    </a>
+  );
+}
 
 /** Section ids the nav tracks, derived from the links themselves. */
 const SECTION_IDS = navLinks.map((link) => link.href.slice(1));
@@ -82,6 +125,7 @@ export default function Nav({ open }: { open: boolean }) {
               </a>
             );
           })}
+          <FacebookMark />
           <RegisterButton open={open} />
         </div>
 
@@ -131,8 +175,9 @@ export default function Nav({ open }: { open: boolean }) {
               {link.label}
             </a>
           ))}
-          <div className="mt-4 w-full max-w-xs">
+          <div className="mt-4 flex w-full max-w-xs flex-col items-center gap-4">
             <RegisterButton open={open} className="w-full" />
+            <FacebookMark />
           </div>
         </div>
       </div>
